@@ -48,7 +48,7 @@ def has_cycle_wrapper(executor, head, cycle_idx):
             cursor = cursor.next
             cycle_length += 1 if cycle_start is not None else 0
 
-        if cursor.data == cycle_idx:
+        if cursor.val == cycle_idx:
             cycle_start = cursor
         if cycle_start is None:
             raise RuntimeError('Can\'t find a cycle start')

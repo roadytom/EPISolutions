@@ -3,8 +3,8 @@ from test_framework.binary_tree_utils import (binary_tree_to_string,
 
 
 class BinaryTreeNode:
-    def __init__(self, data=None, left=None, right=None):
-        self.data = data
+    def __init__(self, val=None, left=None, right=None):
+        self.val = val
         self.left = left
         self.right = right
 

@@ -7,7 +7,7 @@ def sum_root_to_leaf(tree: BinaryTreeNode) -> int:
         if not tree:
             return 0
 
-        partial_path_sum = partial_path_sum * 2 + tree.data
+        partial_path_sum = partial_path_sum * 2 + tree.val
         if not tree.left and not tree.right:  # Leaf.
             return partial_path_sum
         # Non-leaf.

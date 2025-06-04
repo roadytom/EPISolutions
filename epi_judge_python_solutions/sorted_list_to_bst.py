@@ -41,7 +41,7 @@ def compare_vector_and_tree(tree, it):
     v = next(it, None)
     if v is None:
         raise TestFailure('Too few values in the tree')
-    if v != tree.data:
+    if v != tree.val:
         raise TestFailure('Unexpected value')
 
     compare_vector_and_tree(tree.next, it)

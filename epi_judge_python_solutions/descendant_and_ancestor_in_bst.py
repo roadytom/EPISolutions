@@ -36,7 +36,7 @@ def pair_includes_ancestor_and_descendant_of_m(possible_anc_or_desc_0: BstNode,
 
     def search_target(source, target):
         while source and source is not target:
-            source = source.left if source.data > target.data else source.right
+            source = source.left if source.val > target.val else source.right
         return source is target
 
     # If we get here, we already know one of possible_anc_or_desc_0 or

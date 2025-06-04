@@ -8,10 +8,10 @@ def is_binary_tree_bst(tree: BinaryTreeNode) -> bool:
                           high_range=float('inf')):
         if not tree:
             return True
-        elif not low_range <= tree.data <= high_range:
+        elif not low_range <= tree.val <= high_range:
             return False
-        return (are_keys_in_range(tree.left, low_range, tree.data)
-                and are_keys_in_range(tree.right, tree.data, high_range))
+        return (are_keys_in_range(tree.left, low_range, tree.val)
+                and are_keys_in_range(tree.right, tree.val, high_range))
 
     return are_keys_in_range(tree)
 
@@ -22,7 +22,7 @@ def is_binary_tree_bst_alternative(tree):
             return True
         elif not inorder_traversal(tree.left):
             return False
-        elif prev[0] and prev[0].data > tree.data:
+        elif prev[0] and prev[0].data > tree.val:
             return False
         prev[0] = tree
         return inorder_traversal(tree.right)

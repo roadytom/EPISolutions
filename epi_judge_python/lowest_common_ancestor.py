@@ -10,8 +10,26 @@ from test_framework.test_utils import enable_executor_hook
 
 def lca(tree: BinaryTreeNode, node0: BinaryTreeNode,
         node1: BinaryTreeNode) -> Optional[BinaryTreeNode]:
-    # TODO - you fill in here.
-    return None
+    lca_node = None
+
+    def dfs(node, node1, node2):
+        nonlocal lca_node
+        if lca_node is not None:
+            return False
+        if node is None:
+            return False
+        left = dfs(node.left, node1, node2)
+        right = dfs(node.right, node1, node2)
+        equal1 = node.val == node1.val
+        equal2 = node.val == node2.val
+        equals = [equal1, equal2, left, right]
+        if equals.count(True) == 2:
+            lca_node = node
+            return True
+        return equals.count(True) > 0
+
+    dfs(tree, node0, node1)
+    return lca_node
 
 
 @enable_executor_hook
@@ -23,7 +41,7 @@ def lca_wrapper(executor, tree, key1, key2):
 
     if result is None:
         raise TestFailure('Result can\'t be None')
-    return result.data
+    return result.val
 
 
 if __name__ == '__main__':

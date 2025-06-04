@@ -21,7 +21,7 @@ def lca_wrapper(executor, tree, s, b):
                           must_find_node(tree, b)))
     if result is None:
         raise TestFailure('Result can\'t be None')
-    return result.data
+    return result.val
 
 
 if __name__ == '__main__':

@@ -15,7 +15,7 @@ def exterior_binary_tree(tree: BinaryTreeNode) -> List[BinaryTreeNode]:
 def create_output_list(L):
     if any(l is None for l in L):
         raise TestFailure('Resulting list contains None')
-    return [l.data for l in L]
+    return [l.val for l in L]
 
 
 @enable_executor_hook

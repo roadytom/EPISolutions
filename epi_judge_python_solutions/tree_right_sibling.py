@@ -44,7 +44,7 @@ def traverse_left(node):
 def clone_tree(original):
     if not original:
         return None
-    cloned = BinaryTreeNode(original.data)
+    cloned = BinaryTreeNode(original.val)
     cloned.left, cloned.right = clone_tree(original.left), clone_tree(
         original.right)
     return cloned
@@ -56,7 +56,7 @@ def construct_right_sibling_wrapper(executor, tree):
 
     executor.run(functools.partial(construct_right_sibling, cloned))
 
-    return [[n.data for n in traverse_next(level)]
+    return [[n.val for n in traverse_next(level)]
             for level in traverse_left(cloned)]
 
 

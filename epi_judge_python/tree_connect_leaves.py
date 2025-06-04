@@ -18,7 +18,7 @@ def create_list_of_leaves_wrapper(executor, tree):
 
     if any(x is None for x in result):
         raise TestFailure('Result list can\'t contain None')
-    return [x.data for x in result]
+    return [x.val for x in result]
 
 
 if __name__ == '__main__':

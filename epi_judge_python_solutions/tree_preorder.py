@@ -13,7 +13,7 @@ def preorder_traversal(tree: BinaryTreeNode) -> List[int]:
         node, node_processed = in_process.pop()
         if node:
             if node_processed:
-                result.append(node.data)
+                result.append(node.val)
             else:
                 in_process.append((node.right, False))
                 in_process.append((node.left, False))

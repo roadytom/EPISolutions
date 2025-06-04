@@ -14,10 +14,10 @@ def list_pivoting(l: ListNode, x: int) -> Optional[ListNode]:
     greater_head = greater_iter = ListNode()
     # Populates the three lists.
     while l:
-        if l.data < x:
+        if l.val < x:
             less_iter.next = l
             less_iter = less_iter.next
-        elif l.data == x:
+        elif l.val == x:
             equal_iter.next = l
             equal_iter = equal_iter.next
         else:  # l.data > x.

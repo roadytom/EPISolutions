@@ -13,7 +13,7 @@ def postorder_traversal(tree: BinaryTreeNode) -> List[int]:
         node, subtrees_traversed = in_process.pop()
         if node:
             if subtrees_traversed:
-                result.append(node.data)
+                result.append(node.val)
             else:
                 in_process.append((node, True))
                 in_process.append((node.right, False))

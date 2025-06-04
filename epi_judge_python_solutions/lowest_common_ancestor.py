@@ -48,7 +48,7 @@ def lca_wrapper(executor, tree, key1, key2):
 
     if result is None:
         raise TestFailure('Result can\'t be None')
-    return result.data
+    return result.val
 
 
 if __name__ == '__main__':

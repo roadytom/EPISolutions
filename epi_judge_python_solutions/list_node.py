@@ -1,12 +1,12 @@
 class ListNode:
-    def __init__(self, data=0, next=None):
-        self.data = data
+    def __init__(self, val=0, next=None):
+        self.val = val
         self.next = next
 
     def __eq__(self, other):
         a, b = self, other
         while a and b:
-            if a.data != b.data:
+            if a.val != b.val:
                 return False
             a, b = a.next, b.next
         return a is None and b is None
@@ -26,14 +26,14 @@ class ListNode:
 
             if id(node) in visited:
                 if node.next is not node:
-                    result += str(node.data)
+                    result += str(node.val)
                     result += ' -> ... -> '
 
-                result += str(node.data)
+                result += str(node.val)
                 result += ' -> ...'
                 break
             else:
-                result += str(node.data)
+                result += str(node.val)
                 visited.add(id(node))
             node = node.next
 

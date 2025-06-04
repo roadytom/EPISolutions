@@ -4,7 +4,7 @@ from test_framework import generic_test
 
 def search_list(L: ListNode, key: int) -> ListNode:
 
-    while L and L.data != key:
+    while L and L.val != key:
         L = L.next
     # If key was not present in the list, L will have become null.
     return L
@@ -12,7 +12,7 @@ def search_list(L: ListNode, key: int) -> ListNode:
 
 def search_list_wrapper(L, key):
     result = search_list(L, key)
-    return result.data if result else -1
+    return result.val if result else -1
 
 
 if __name__ == '__main__':

@@ -31,7 +31,7 @@ def find_successor_wrapper(executor, tree, node_idx):
 
     result = executor.run(functools.partial(find_successor, node))
 
-    return result.data if result else -1
+    return result.val if result else -1
 
 
 if __name__ == '__main__':

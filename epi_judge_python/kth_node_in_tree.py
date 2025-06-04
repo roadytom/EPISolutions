@@ -35,7 +35,7 @@ def find_kth_node_binary_tree_wrapper(executor, tree, k):
 
     if not result:
         raise TestFailure('Result can\'t be None')
-    return result.data
+    return result.val
 
 
 if __name__ == '__main__':

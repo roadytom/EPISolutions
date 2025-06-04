@@ -37,7 +37,7 @@ def generate_preorder(tree):
         if not node:
             continue
 
-        result.append(node.data)
+        result.append(node.val)
         s.append(node.right)
         s.append(node.left)
 
@@ -58,7 +58,7 @@ def generate_inorder(tree):
         if initial:
             initial = False
         else:
-            result.append(node.data)
+            result.append(node.val)
             node = node.right
 
         while node:
@@ -77,7 +77,7 @@ def generate_postorder(tree):
         if not node:
             continue
 
-        result.append(node.data)
+        result.append(node.val)
         s.append(node.left)
         s.append(node.right)
 
@@ -95,7 +95,7 @@ def find_node(tree, val):
         if not node:
             continue
 
-        if node.data == val:
+        if node.val == val:
             return node
 
         s.append(node.left)
@@ -121,7 +121,7 @@ def equal_binary_trees(tree1, tree2):
             return False
 
         if node1:
-            if node1.data != node2.data:
+            if node1.val != node2.val:
                 return False
             s.append((node1.left, node2.left))
             s.append((node1.right, node2.right))
@@ -135,8 +135,8 @@ def assert_equal_binary_trees(expected, result):
     while s:
         expected, result, path = s.pop()
 
-        expected_data = expected.data if expected is not None else None
-        result_data = result.data if result is not None else None
+        expected_data = expected.val if expected is not None else None
+        result_data = result.val if result is not None else None
 
         if expected_data != result_data:
             raise TestFailure() \
@@ -173,7 +173,7 @@ def binary_tree_to_string(tree):
                 result += 'null, '
                 null_nodes_pending -= 1
 
-            result += '"{}"'.format(node.data)
+            result += '"{}"'.format(node.val)
 
             visited.add(id(node))
             nodes.append(node.left)

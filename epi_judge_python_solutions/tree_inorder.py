@@ -13,7 +13,7 @@ def inorder_traversal(tree: BinaryTreeNode) -> List[int]:
         node, left_subtree_traversed = in_process.pop()
         if node:
             if left_subtree_traversed:
-                result.append(node.data)
+                result.append(node.val)
             else:
                 in_process.append((node.right, False))
                 in_process.append((node, True))

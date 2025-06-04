@@ -7,7 +7,7 @@ def is_symmetric(tree: BinaryTreeNode) -> bool:
         if not subtree_0 and not subtree_1:
             return True
         elif subtree_0 and subtree_1:
-            return (subtree_0.data == subtree_1.data
+            return (subtree_0.val == subtree_1.val
                     and check_symmetric(subtree_0.left, subtree_1.right)
                     and check_symmetric(subtree_0.right, subtree_1.left))
         # One subtree is empty, and the other is not.

@@ -85,7 +85,7 @@ def merge_two_sorted_lists(A, B):
 
     AB = [A, B]
     while all(AB):
-        A_or_B = 0 if AB[0].data < AB[1].data else 1
+        A_or_B = 0 if AB[0].val < AB[1].val else 1
         tail.right = AB[A_or_B]
         tail = tail.right  # Resets tail to the last node.
         AB[A_or_B] = tail.right
