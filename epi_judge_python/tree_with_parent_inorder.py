@@ -3,9 +3,13 @@ from typing import List
 from binary_tree_with_parent_prototype import BinaryTreeNode
 from test_framework import generic_test
 
+"""
+LNR
+"""
 
-def inorder_traversal(tree: BinaryTreeNode) -> List[int]:
-    # TODO - you fill in here.
+
+def inorder_traversal(root: BinaryTreeNode) -> List[int]:
+
     return []
 
 

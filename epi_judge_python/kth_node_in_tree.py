@@ -7,17 +7,29 @@ from test_framework.test_utils import enable_executor_hook
 
 
 class BinaryTreeNode:
-    def __init__(self, data=None, left=None, right=None, size=None):
-        self.data = data
+    def __init__(self, val=None, left=None, right=None, size=None):
+        self.val = val
         self.left = left
         self.right = right
         self.size = size
 
 
-def find_kth_node_binary_tree(tree: BinaryTreeNode,
+def find_kth_node_binary_tree(root: BinaryTreeNode,
                               k: int) -> Optional[BinaryTreeNode]:
-    # TODO - you fill in here.
-    return None
+    def get_node_size_or_zero(node):
+        return 0 if not node else node.size
+
+    def dfs(node, k):
+        if k > node.size:
+            return None
+        if k <= get_node_size_or_zero(node.left):
+            return dfs(node.left, k)
+        k -= get_node_size_or_zero(node.left)
+        if k == 1:
+            return node
+        return dfs(node.right, k - 1)
+
+    return dfs(root, k)
 
 
 @enable_executor_hook
