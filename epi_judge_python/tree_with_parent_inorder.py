@@ -10,43 +10,23 @@ LNR
 
 def inorder_traversal(root: BinaryTreeNode) -> List[int]:
     res = []
-    node = root
-    DOWN, UP = 0, 1
-    DIRECTION = DOWN
+    prev, curr, nxt = None, root, None
 
-    while node:
-        if DIRECTION == DOWN:
-            node = left_most_child(node)
-            DIRECTION, node = process_node(DIRECTION, UP, DOWN, node, res)
-        else:
-            node = lowest_left_wise_parent(node)
-            if node is None:
-                break
-            DIRECTION, node = process_node(DIRECTION, UP, DOWN, node, res)
+    while curr:
+        if prev is None or curr.parent is prev:
+            if curr.left:
+                nxt = curr.left
+            else:
+                res.append(curr.val)
+                nxt = curr.right or curr.parent
+        elif curr.left is prev:
+            res.append(curr.val)
+            nxt = curr.right or curr.parent
+        elif curr.right is prev:
+            nxt = curr.parent
 
+        prev, curr = curr, nxt
     return res
-
-
-def process_node(DIRECTION, UP, DOWN, node, res):
-    res.append(node.val)
-    if node.right is not None:
-        node = node.right
-        DIRECTION = DOWN
-    else:
-        DIRECTION = UP
-    return DIRECTION, node
-
-
-def left_most_child(node):
-    while node.left is not None:
-        node = node.left
-    return node
-
-
-def lowest_left_wise_parent(node):
-    while node.parent and node.parent.right == node:
-        node = node.parent
-    return node.parent
 
 
 if __name__ == '__main__':
