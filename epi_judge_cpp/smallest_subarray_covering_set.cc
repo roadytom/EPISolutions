@@ -10,43 +10,44 @@ using std::unordered_set;
 using std::vector;
 
 struct Subarray {
-  int start, end;
+    int start, end;
 };
 
 Subarray FindSmallestSubarrayCoveringSet(
     const vector<string> &paragraph, const unordered_set<string> &keywords) {
-  // TODO - you fill in here.
-  return {0, 0};
+    // TODO - you fill in here.
+    return {0, 0};
 }
+
 int FindSmallestSubarrayCoveringSetWrapper(
     TimedExecutor &executor, const vector<string> &paragraph,
     const unordered_set<string> &keywords) {
-  unordered_set<string> copy = keywords;
+    unordered_set<string> copy = keywords;
 
-  auto result = executor.Run(
-      [&] { return FindSmallestSubarrayCoveringSet(paragraph, keywords); });
+    auto result = executor.Run(
+        [&] { return FindSmallestSubarrayCoveringSet(paragraph, keywords); });
 
-  if (result.start < 0 || result.start >= paragraph.size() || result.end < 0 ||
-      result.end >= paragraph.size() || result.start > result.end) {
-    throw TestFailure("Index out of range");
-  }
+    if (result.start < 0 || result.start >= paragraph.size() || result.end < 0 ||
+        result.end >= paragraph.size() || result.start > result.end) {
+        throw TestFailure("Index out of range");
+    }
 
-  for (int i = result.start; i <= result.end; i++) {
-    copy.erase(paragraph[i]);
-  }
+    for (int i = result.start; i <= result.end; i++) {
+        copy.erase(paragraph[i]);
+    }
 
-  if (!copy.empty()) {
-    throw TestFailure("Not all keywords are in the range");
-  }
+    if (!copy.empty()) {
+        throw TestFailure("Not all keywords are in the range");
+    }
 
-  return result.end - result.start + 1;
+    return result.end - result.start + 1;
 }
 
 int main(int argc, char *argv[]) {
-  std::vector<std::string> args{argv + 1, argv + argc};
-  std::vector<std::string> param_names{"executor", "paragraph", "keywords"};
-  return GenericTestMain(args, "smallest_subarray_covering_set.cc",
-                         "smallest_subarray_covering_set.tsv",
-                         &FindSmallestSubarrayCoveringSetWrapper,
-                         DefaultComparator{}, param_names);
+    std::vector<std::string> args{argv + 1, argv + argc};
+    std::vector<std::string> param_names{"executor", "paragraph", "keywords"};
+    return GenericTestMain(args, "smallest_subarray_covering_set.cc",
+                           "smallest_subarray_covering_set.tsv",
+                           &FindSmallestSubarrayCoveringSetWrapper,
+                           DefaultComparator{}, param_names);
 }

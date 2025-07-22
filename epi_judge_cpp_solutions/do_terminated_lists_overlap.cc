@@ -7,68 +7,69 @@
 
 using std::shared_ptr;
 
-int Length(shared_ptr<ListNode<int>> L);
-void AdvanceListByK(int k, shared_ptr<ListNode<int>>* L);
+int Length(shared_ptr<ListNode<int> > L);
 
-shared_ptr<ListNode<int>> OverlappingNoCycleLists(
-    shared_ptr<ListNode<int>> l0, shared_ptr<ListNode<int>> l1) {
-  int l0_len = Length(l0), l1_len = Length(l1);
+void AdvanceListByK(int k, shared_ptr<ListNode<int> > *L);
 
-  // Advances the longer list to get equal length lists.
-  AdvanceListByK(abs(l0_len - l1_len), l0_len > l1_len ? &l0 : &l1);
+shared_ptr<ListNode<int> > OverlappingNoCycleLists(
+    shared_ptr<ListNode<int> > l0, shared_ptr<ListNode<int> > l1) {
+    int l0_len = Length(l0), l1_len = Length(l1);
 
-  while (l0 && l1 && l0 != l1) {
-    l0 = l0->next, l1 = l1->next;
-  }
-  return l0;  // nullptr implies there is no overlap between l0 and l1.
+    // Advances the longer list to get equal length lists.
+    AdvanceListByK(abs(l0_len - l1_len), l0_len > l1_len ? &l0 : &l1);
+
+    while (l0 && l1 && l0 != l1) {
+        l0 = l0->next, l1 = l1->next;
+    }
+    return l0; // nullptr implies there is no overlap between l0 and l1.
 }
 
-int Length(shared_ptr<ListNode<int>> L) {
-  int length = 0;
-  while (L) {
-    ++length, L = L->next;
-  }
-  return length;
+int Length(shared_ptr<ListNode<int> > L) {
+    int length = 0;
+    while (L) {
+        ++length, L = L->next;
+    }
+    return length;
 }
 
 // Advances L by k steps.
-void AdvanceListByK(int k, shared_ptr<ListNode<int>>* L) {
-  while (k--) {
-    *L = (*L)->next;
-  }
+void AdvanceListByK(int k, shared_ptr<ListNode<int> > *L) {
+    while (k--) {
+        *L = (*L)->next;
+    }
 }
 
-void OverlappingNoCycleListsWrapper(TimedExecutor& executor,
-                                    shared_ptr<ListNode<int>> l0,
-                                    shared_ptr<ListNode<int>> l1,
-                                    shared_ptr<ListNode<int>> common) {
-  if (common) {
-    if (l0) {
-      auto i = l0;
-      while (i->next) {
-        i = i->next;
-      }
-      i->next = common;
-    } else {
-      l0 = common;
+void OverlappingNoCycleListsWrapper(TimedExecutor &executor,
+                                    shared_ptr<ListNode<int> > l0,
+                                    shared_ptr<ListNode<int> > l1,
+                                    shared_ptr<ListNode<int> > common) {
+    if (common) {
+        if (l0) {
+            auto i = l0;
+            while (i->next) {
+                i = i->next;
+            }
+            i->next = common;
+        } else {
+            l0 = common;
+        }
+
+        if (l1) {
+            auto i = l1;
+            while (i->next) {
+                i = i->next;
+            }
+            i->next = common;
+        } else {
+            l1 = common;
+        }
     }
 
-    if (l1) {
-      auto i = l1;
-      while (i->next) {
-        i = i->next;
-      }
-      i->next = common;
-    } else {
-      l1 = common;
+    auto result = executor.Run([&] { return OverlappingNoCycleLists(l0, l1); });
+
+    if (result != common) {
+        throw TestFailure("Invalid result");
     }
-  }
-
-  auto result = executor.Run([&] { return OverlappingNoCycleLists(l0, l1); });
-
-  if (result != common) {
-    throw TestFailure("Invalid result");
-  }
 }
 
 // clang-format off

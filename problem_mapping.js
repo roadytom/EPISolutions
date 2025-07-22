@@ -1002,7 +1002,7 @@ problem_mapping = {
     "Chapter 09: Binary Trees": {
         "9.01 Test if a binary tree is height-balanced": {
             "C++: is_tree_balanced.cc": {
-                "passed": 0,
+                "passed": 1,
                 "total": 3852
             },
             "Java: IsTreeBalanced.java": {
@@ -1150,7 +1150,7 @@ problem_mapping = {
                 "total": 3852
             },
             "Python: tree_from_preorder_inorder.py": {
-                "passed": 0,
+                "passed": 3852,
                 "total": 3852
             }
         },
@@ -2734,7 +2734,7 @@ problem_mapping = {
                 "total": 149
             },
             "Python: max_of_sliding_window.py": {
-                "passed": 0,
+                "passed": 149,
                 "total": 149
             }
         },

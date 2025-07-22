@@ -7,25 +7,25 @@
 using std::unique_ptr;
 using std::vector;
 
-void FindKLargestInBSTHelper(const unique_ptr<BstNode<int>>&, int,
-                             vector<int>*);
+void FindKLargestInBSTHelper(const unique_ptr<BstNode<int> > &, int,
+                             vector<int> *);
 
-vector<int> FindKLargestInBST(const unique_ptr<BstNode<int>>& tree, int k) {
-  vector<int> k_largest_elements;
-  FindKLargestInBSTHelper(tree, k, &k_largest_elements);
-  return k_largest_elements;
+vector<int> FindKLargestInBST(const unique_ptr<BstNode<int> > &tree, int k) {
+    vector<int> k_largest_elements;
+    FindKLargestInBSTHelper(tree, k, &k_largest_elements);
+    return k_largest_elements;
 }
 
-void FindKLargestInBSTHelper(const unique_ptr<BstNode<int>>& tree, int k,
-                             vector<int>* k_largest_elements) {
-  // Perform reverse inorder traversal.
-  if (tree && size(*k_largest_elements) < k) {
-    FindKLargestInBSTHelper(tree->right, k, k_largest_elements);
-    if (size(*k_largest_elements) < k) {
-      k_largest_elements->emplace_back(tree->data);
-      FindKLargestInBSTHelper(tree->left, k, k_largest_elements);
+void FindKLargestInBSTHelper(const unique_ptr<BstNode<int> > &tree, int k,
+                             vector<int> *k_largest_elements) {
+    // Perform reverse inorder traversal.
+    if (tree && size(*k_largest_elements) < k) {
+        FindKLargestInBSTHelper(tree->right, k, k_largest_elements);
+        if (size(*k_largest_elements) < k) {
+            k_largest_elements->emplace_back(tree->data);
+            FindKLargestInBSTHelper(tree->left, k, k_largest_elements);
+        }
     }
-  }
 }
 
 // clang-format off

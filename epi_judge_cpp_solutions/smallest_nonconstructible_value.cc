@@ -7,15 +7,15 @@
 using std::vector;
 
 int SmallestNonconstructibleValue(vector<int> A) {
-  sort(begin(A), end(A));
-  int max_constructible_value = 0;
-  for (int a : A) {
-    if (a > max_constructible_value + 1) {
-      break;
+    sort(begin(A), end(A));
+    int max_constructible_value = 0;
+    for (int a: A) {
+        if (a > max_constructible_value + 1) {
+            break;
+        }
+        max_constructible_value += a;
     }
-    max_constructible_value += a;
-  }
-  return max_constructible_value + 1;
+    return max_constructible_value + 1;
 }
 
 // clang-format off

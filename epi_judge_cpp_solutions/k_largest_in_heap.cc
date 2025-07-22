@@ -8,35 +8,37 @@ using std::function;
 using std::priority_queue;
 using std::vector;
 
-vector<int> KLargestInBinaryHeap(const vector<int>& A, int k) {
-  if (k <= 0) {
-    return {};
-  }
-
-  struct HeapEntry {
-    int index, value;
-  };
-  // The largest element in A is at index 0.
-  priority_queue<HeapEntry, vector<HeapEntry>,
-                 function<bool(HeapEntry, HeapEntry)>>
-      candidate_max_heap([](const HeapEntry& a,
-                            const HeapEntry& b) { return a.value < b.value; },
-                         {{0, A[0]}});
-  vector<int> result;
-  for (int i = 0; i < k; ++i) {
-    int candidate_idx = candidate_max_heap.top().index;
-    result.emplace_back(candidate_max_heap.top().value);
-    candidate_max_heap.pop();
-
-    if (int left_child_idx = 2 * candidate_idx + 1; left_child_idx < size(A)) {
-      candidate_max_heap.push({left_child_idx, A[left_child_idx]});
+vector<int> KLargestInBinaryHeap(const vector<int> &A, int k) {
+    if (k <= 0) {
+        return {};
     }
-    if (int right_child_idx = 2 * candidate_idx + 2;
-        right_child_idx < size(A)) {
-      candidate_max_heap.push({right_child_idx, A[right_child_idx]});
+
+    struct HeapEntry {
+        int index, value;
+    };
+    // The largest element in A is at index 0.
+    priority_queue<HeapEntry, vector<HeapEntry>,
+                function<bool(HeapEntry, HeapEntry)> >
+            candidate_max_heap([](const HeapEntry &a,
+                                  const HeapEntry &b) {
+                                   return a.value < b.value;
+                               },
+                               {{0, A[0]}});
+    vector<int> result;
+    for (int i = 0; i < k; ++i) {
+        int candidate_idx = candidate_max_heap.top().index;
+        result.emplace_back(candidate_max_heap.top().value);
+        candidate_max_heap.pop();
+
+        if (int left_child_idx = 2 * candidate_idx + 1; left_child_idx < size(A)) {
+            candidate_max_heap.push({left_child_idx, A[left_child_idx]});
+        }
+        if (int right_child_idx = 2 * candidate_idx + 2;
+            right_child_idx < size(A)) {
+            candidate_max_heap.push({right_child_idx, A[right_child_idx]});
+        }
     }
-  }
-  return result;
+    return result;
 }
 
 // clang-format off

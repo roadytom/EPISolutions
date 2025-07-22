@@ -14,51 +14,51 @@ using std::bind;
 using std::vector;
 
 vector<int> ComputeRandomPermutation(int n) {
-  vector<int> permutation(n);
-  // Initializes permutation to 0, 1, 2, ..., n - 1.
-  iota(begin(permutation), end(permutation), 0);
-  RandomSampling(n, &permutation);
-  return permutation;
+    vector<int> permutation(n);
+    // Initializes permutation to 0, 1, 2, ..., n - 1.
+    iota(begin(permutation), end(permutation), 0);
+    RandomSampling(n, &permutation);
+    return permutation;
 }
 
 int Factorial(int n) { return n <= 1 ? 1 : n * Factorial(n - 1); }
 
 int PermutationIndex(vector<int> perm) {
-  int idx = 0;
-  int n = perm.size();
-  for (int i = 0; i < perm.size(); ++i) {
-    int a = perm[i];
-    idx += a * Factorial(n - 1);
-    for (int j = i + 1; j < perm.size(); ++j) {
-      if (perm[j] > a) {
-        --perm[j];
-      }
+    int idx = 0;
+    int n = perm.size();
+    for (int i = 0; i < perm.size(); ++i) {
+        int a = perm[i];
+        idx += a * Factorial(n - 1);
+        for (int j = i + 1; j < perm.size(); ++j) {
+            if (perm[j] > a) {
+                --perm[j];
+            }
+        }
+        --n;
     }
-    --n;
-  }
-  return idx;
+    return idx;
 }
 
-bool ComputeRandomPermutationRunner(TimedExecutor& executor, int n) {
-  using namespace test_framework;
-  vector<vector<int>> results;
+bool ComputeRandomPermutationRunner(TimedExecutor &executor, int n) {
+    using namespace test_framework;
+    vector<vector<int> > results;
 
-  executor.Run([&] {
-    for (int i = 0; i < 1000000; ++i) {
-      results.emplace_back(ComputeRandomPermutation(n));
+    executor.Run([&] {
+        for (int i = 0; i < 1000000; ++i) {
+            results.emplace_back(ComputeRandomPermutation(n));
+        }
+    });
+
+    vector<int> sequence;
+    for (const vector<int> &result: results) {
+        sequence.emplace_back(PermutationIndex(result));
     }
-  });
-
-  vector<int> sequence;
-  for (const vector<int>& result : results) {
-    sequence.emplace_back(PermutationIndex(result));
-  }
-  return CheckSequenceIsUniformlyRandom(sequence, Factorial(n), 0.01);
+    return CheckSequenceIsUniformlyRandom(sequence, Factorial(n), 0.01);
 }
 
-void ComputeRandomPermutationWrapper(TimedExecutor& executor, int n) {
-  RunFuncWithRetries(
-      std::bind(ComputeRandomPermutationRunner, std::ref(executor), n));
+void ComputeRandomPermutationWrapper(TimedExecutor &executor, int n) {
+    RunFuncWithRetries(
+        std::bind(ComputeRandomPermutationRunner, std::ref(executor), n));
 }
 
 // clang-format off

@@ -6,29 +6,29 @@
 using std::swap;
 using std::vector;
 
-void DirectedPermutations(int, vector<int> *, vector<vector<int>> *);
+void DirectedPermutations(int, vector<int> *, vector<vector<int> > *);
 
-vector<vector<int>> Permutations(vector<int> A) {
-  vector<vector<int>> result;
-  DirectedPermutations(0, &A, &result);
-  return result;
+vector<vector<int> > Permutations(vector<int> A) {
+    vector<vector<int> > result;
+    DirectedPermutations(0, &A, &result);
+    return result;
 }
 
 void DirectedPermutations(int i, vector<int> *A_ptr,
-                          vector<vector<int>> *result) {
-  vector<int> &A = *A_ptr;
-  if (i == size(A) - 1) {
-    result->emplace_back(A);
-    return;
-  }
+                          vector<vector<int> > *result) {
+    vector<int> &A = *A_ptr;
+    if (i == size(A) - 1) {
+        result->emplace_back(A);
+        return;
+    }
 
-  // Try every possibility for A[i].
-  for (int j = i; j < size(A); ++j) {
-    swap(A[i], A[j]);
-    // Generate all permutations for A[i + 1, size(A) - 1].
-    DirectedPermutations(i + 1, A_ptr, result);
-    swap(A[i], A[j]);
-  }
+    // Try every possibility for A[i].
+    for (int j = i; j < size(A); ++j) {
+        swap(A[i], A[j]);
+        // Generate all permutations for A[i + 1, size(A) - 1].
+        DirectedPermutations(i + 1, A_ptr, result);
+        swap(A[i], A[j]);
+    }
 }
 
 // clang-format off

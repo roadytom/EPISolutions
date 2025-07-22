@@ -6,30 +6,33 @@
 using std::vector;
 
 struct Rect {
-  int left, right, height;
+    int left, right, height;
 };
+
 using Skyline = vector<Rect>;
 
-Skyline ComputeSkyline(const vector<Rect>& buildings) {
-  // TODO - you fill in here.
-  return {};
+Skyline ComputeSkyline(const vector<Rect> &buildings) {
+    // TODO - you fill in here.
+    return {};
 }
-bool operator==(const Rect& a, const Rect& b) {
-  return a.left == b.left && a.right == b.right && a.height == b.height;
+
+bool operator==(const Rect &a, const Rect &b) {
+    return a.left == b.left && a.right == b.right && a.height == b.height;
 }
 
 namespace test_framework {
-template <>
-struct SerializationTrait<Rect> : UserSerTrait<Rect, int, int, int> {};
-}  // namespace test_framework
+    template<>
+    struct SerializationTrait<Rect> : UserSerTrait<Rect, int, int, int> {
+    };
+} // namespace test_framework
 
-std::ostream& operator<<(std::ostream& out, const Rect& r) {
-  return PrintTo(out, std::make_tuple(r.left, r.right, r.height));
+std::ostream &operator<<(std::ostream &out, const Rect &r) {
+    return PrintTo(out, std::make_tuple(r.left, r.right, r.height));
 }
 
-int main(int argc, char* argv[]) {
-  std::vector<std::string> args{argv + 1, argv + argc};
-  std::vector<std::string> param_names{"buildings"};
-  return GenericTestMain(args, "drawing_skyline.cc", "drawing_skyline.tsv",
-                         &ComputeSkyline, DefaultComparator{}, param_names);
+int main(int argc, char *argv[]) {
+    std::vector<std::string> args{argv + 1, argv + argc};
+    std::vector<std::string> param_names{"buildings"};
+    return GenericTestMain(args, "drawing_skyline.cc", "drawing_skyline.tsv",
+                           &ComputeSkyline, DefaultComparator{}, param_names);
 }

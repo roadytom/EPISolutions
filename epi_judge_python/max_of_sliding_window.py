@@ -1,4 +1,5 @@
 import functools
+from collections import deque
 from typing import List
 
 from test_framework import generic_test
@@ -13,8 +14,18 @@ class TrafficElement:
 
 def calculate_traffic_volumes(A: List[TrafficElement],
                               w: int) -> List[TrafficElement]:
-    # TODO - you fill in here.
-    return []
+    mdd = deque()
+    ans = []
+    for element in A:
+        time, volume = element.time, element.volume
+        while mdd and mdd[-1].volume <= volume:
+            mdd.pop()
+        mdd.append(element)
+        window_start = time - w
+        while mdd and mdd[0].time < window_start:
+            mdd.popleft()
+        ans.append(TrafficElement(time, mdd[0].volume))
+    return ans
 
 
 @enable_executor_hook

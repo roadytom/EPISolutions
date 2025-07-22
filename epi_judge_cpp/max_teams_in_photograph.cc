@@ -7,47 +7,49 @@
 using std::vector;
 
 struct GraphVertex {
-  vector<GraphVertex*> edges;
-  // Set max_distance = 0 to indicate unvisited vertex.
-  int max_distance = 0;
+    vector<GraphVertex *> edges;
+    // Set max_distance = 0 to indicate unvisited vertex.
+    int max_distance = 0;
 };
 
-int FindLargestNumberTeams(vector<GraphVertex>* graph) {
-  // TODO - you fill in here.
-  return 0;
+int FindLargestNumberTeams(vector<GraphVertex> *graph) {
+    // TODO - you fill in here.
+    return 0;
 }
+
 struct Edge {
-  int from;
-  int to;
+    int from;
+    int to;
 };
 
 namespace test_framework {
-template <>
-struct SerializationTrait<Edge> : UserSerTrait<Edge, int, int> {};
-}  // namespace test_framework
+    template<>
+    struct SerializationTrait<Edge> : UserSerTrait<Edge, int, int> {
+    };
+} // namespace test_framework
 
-int FindLargestNumberTeamsWrapper(TimedExecutor& executor, int k,
-                                  const vector<Edge>& edges) {
-  if (k <= 0) {
-    throw std::runtime_error("Invalid k value");
-  }
-
-  vector<GraphVertex> graph(k, GraphVertex{});
-
-  for (const Edge& e : edges) {
-    if (e.from < 0 || e.from >= k || e.to < 0 || e.to >= k) {
-      throw std::runtime_error("Invalid vertex index");
+int FindLargestNumberTeamsWrapper(TimedExecutor &executor, int k,
+                                  const vector<Edge> &edges) {
+    if (k <= 0) {
+        throw std::runtime_error("Invalid k value");
     }
-    graph[e.from].edges.push_back(&graph[e.to]);
-  }
 
-  return executor.Run([&] { return FindLargestNumberTeams(&graph); });
+    vector<GraphVertex> graph(k, GraphVertex{});
+
+    for (const Edge &e: edges) {
+        if (e.from < 0 || e.from >= k || e.to < 0 || e.to >= k) {
+            throw std::runtime_error("Invalid vertex index");
+        }
+        graph[e.from].edges.push_back(&graph[e.to]);
+    }
+
+    return executor.Run([&] { return FindLargestNumberTeams(&graph); });
 }
 
-int main(int argc, char* argv[]) {
-  std::vector<std::string> args{argv + 1, argv + argc};
-  std::vector<std::string> param_names{"executor", "k", "edges"};
-  return GenericTestMain(
-      args, "max_teams_in_photograph.cc", "max_teams_in_photograph.tsv",
-      &FindLargestNumberTeamsWrapper, DefaultComparator{}, param_names);
+int main(int argc, char *argv[]) {
+    std::vector<std::string> args{argv + 1, argv + argc};
+    std::vector<std::string> param_names{"executor", "k", "edges"};
+    return GenericTestMain(
+        args, "max_teams_in_photograph.cc", "max_teams_in_photograph.tsv",
+        &FindLargestNumberTeamsWrapper, DefaultComparator{}, param_names);
 }

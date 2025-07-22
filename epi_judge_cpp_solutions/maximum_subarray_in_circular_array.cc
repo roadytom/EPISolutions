@@ -6,51 +6,52 @@
 using std::max;
 using std::vector;
 
-int FindMaxSubarray(const vector<int>& A);
-int FindCircularMaxSubarray(const vector<int>& A);
+int FindMaxSubarray(const vector<int> &A);
 
-int MaxSubarraySumInCircular(const vector<int>& A) {
-  return max(FindMaxSubarray(A), FindCircularMaxSubarray(A));
+int FindCircularMaxSubarray(const vector<int> &A);
+
+int MaxSubarraySumInCircular(const vector<int> &A) {
+    return max(FindMaxSubarray(A), FindCircularMaxSubarray(A));
 }
 
 // Calculates the non-circular solution.
-int FindMaxSubarray(const vector<int>& A) {
-  int maximum_till = 0, maximum = 0;
-  for (int a : A) {
-    maximum_till = max(a, a + maximum_till);
-    maximum = max(maximum, maximum_till);
-  }
-  return maximum;
+int FindMaxSubarray(const vector<int> &A) {
+    int maximum_till = 0, maximum = 0;
+    for (int a: A) {
+        maximum_till = max(a, a + maximum_till);
+        maximum = max(maximum, maximum_till);
+    }
+    return maximum;
 }
 
-vector<int> ComputeRunningMaximum(const vector<int>& A) {
-  vector<int> running_maximum;
-  int sum = A.front();
-  running_maximum.emplace_back(sum);
-  for (int i = 1; i < size(A); ++i) {
-    sum += A[i];
-    running_maximum.emplace_back(max(running_maximum.back(), sum));
-  }
-  return running_maximum;
+vector<int> ComputeRunningMaximum(const vector<int> &A) {
+    vector<int> running_maximum;
+    int sum = A.front();
+    running_maximum.emplace_back(sum);
+    for (int i = 1; i < size(A); ++i) {
+        sum += A[i];
+        running_maximum.emplace_back(max(running_maximum.back(), sum));
+    }
+    return running_maximum;
 }
 
 // Calculates the solution which is circular.
-int FindCircularMaxSubarray(const vector<int>& A) {
-  // Maximum subarray sum starts at index 0 and ends at or before index i.
-  vector<int> maximum_begin = ComputeRunningMaximum(A);
+int FindCircularMaxSubarray(const vector<int> &A) {
+    // Maximum subarray sum starts at index 0 and ends at or before index i.
+    vector<int> maximum_begin = ComputeRunningMaximum(A);
 
-  // Maximum subarray sum starts at index i + 1 and ends at the last element.
-  vector<int> maximum_end = ComputeRunningMaximum({crbegin(A), crend(A)});
-  maximum_end.pop_back();
-  reverse(begin(maximum_end), end(maximum_end));
-  maximum_end.emplace_back(0);
+    // Maximum subarray sum starts at index i + 1 and ends at the last element.
+    vector<int> maximum_end = ComputeRunningMaximum({crbegin(A), crend(A)});
+    maximum_end.pop_back();
+    reverse(begin(maximum_end), end(maximum_end));
+    maximum_end.emplace_back(0);
 
-  // Calculates the maximum subarray which is circular.
-  int circular_max = 0;
-  for (int i = 0; i < size(A); ++i) {
-    circular_max = max(circular_max, maximum_begin[i] + maximum_end[i]);
-  }
-  return circular_max;
+    // Calculates the maximum subarray which is circular.
+    int circular_max = 0;
+    for (int i = 0; i < size(A); ++i) {
+        circular_max = max(circular_max, maximum_begin[i] + maximum_end[i]);
+    }
+    return circular_max;
 }
 
 // clang-format off

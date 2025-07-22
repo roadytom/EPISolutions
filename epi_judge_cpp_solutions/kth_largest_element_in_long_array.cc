@@ -8,28 +8,28 @@ using std::greater;
 using std::vector;
 
 int FindKthLargestUnknownLength(vector<int>::const_iterator stream_begin,
-                                const vector<int>::const_iterator& stream_end,
+                                const vector<int>::const_iterator &stream_end,
                                 int k) {
-  vector<int> candidates;
-  while (stream_begin != stream_end) {
-    candidates.emplace_back(*stream_begin++);
-    if (size(candidates) == 2 * k - 1) {
-      // Reorders elements about k-th largest element with larger elements
-      // appearing before it.
-      nth_element(begin(candidates), begin(candidates) + k - 1, end(candidates),
-                  greater<int>());
-      // Resize to keep just the k largest elements seen so far.
-      candidates.resize(k);
+    vector<int> candidates;
+    while (stream_begin != stream_end) {
+        candidates.emplace_back(*stream_begin++);
+        if (size(candidates) == 2 * k - 1) {
+            // Reorders elements about k-th largest element with larger elements
+            // appearing before it.
+            nth_element(begin(candidates), begin(candidates) + k - 1, end(candidates),
+                        greater<int>());
+            // Resize to keep just the k largest elements seen so far.
+            candidates.resize(k);
+        }
     }
-  }
-  // Finds the k-th largest element in candidates.
-  nth_element(begin(candidates), begin(candidates) + k - 1, end(candidates),
-              greater<int>());
-  return candidates[k - 1];
+    // Finds the k-th largest element in candidates.
+    nth_element(begin(candidates), begin(candidates) + k - 1, end(candidates),
+                greater<int>());
+    return candidates[k - 1];
 }
 
-int FindKthLargestUnknownLengthWrapper(const vector<int>& stream, int k) {
-  return FindKthLargestUnknownLength(stream.cbegin(), stream.cend(), k);
+int FindKthLargestUnknownLengthWrapper(const vector<int> &stream, int k) {
+    return FindKthLargestUnknownLength(stream.cbegin(), stream.cend(), k);
 }
 
 // clang-format off

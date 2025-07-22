@@ -15,107 +15,107 @@ using std::unordered_map;
 using std::unordered_set;
 
 class ClientsCreditsInfo {
- public:
-  void Insert(const string& client_id, int c) {
-    Remove(client_id);
-    client_to_credit_.emplace(client_id, c - offset_);
-    credit_to_clients_[c - offset_].emplace(client_id);
-  }
-
-  bool Remove(const string& client_id) {
-    if (auto credit_iter = client_to_credit_.find(client_id);
-        credit_iter != end(client_to_credit_)) {
-      credit_to_clients_[credit_iter->second].erase(client_id);
-      if (empty(credit_to_clients_[credit_iter->second])) {
-        credit_to_clients_.erase(credit_iter->second);
-      }
-      client_to_credit_.erase(credit_iter);
-      return true;
+public:
+    void Insert(const string &client_id, int c) {
+        Remove(client_id);
+        client_to_credit_.emplace(client_id, c - offset_);
+        credit_to_clients_[c - offset_].emplace(client_id);
     }
-    return false;
-  }
 
-  int Lookup(const string& client_id) const {
-    auto credit_iter = client_to_credit_.find(client_id);
-    return credit_iter == cend(client_to_credit_)
-               ? -1
-               : credit_iter->second + offset_;
-  }
+    bool Remove(const string &client_id) {
+        if (auto credit_iter = client_to_credit_.find(client_id);
+            credit_iter != end(client_to_credit_)) {
+            credit_to_clients_[credit_iter->second].erase(client_id);
+            if (empty(credit_to_clients_[credit_iter->second])) {
+                credit_to_clients_.erase(credit_iter->second);
+            }
+            client_to_credit_.erase(credit_iter);
+            return true;
+        }
+        return false;
+    }
 
-  void AddAll(int C) { offset_ += C; }
+    int Lookup(const string &client_id) const {
+        auto credit_iter = client_to_credit_.find(client_id);
+        return credit_iter == cend(client_to_credit_)
+                   ? -1
+                   : credit_iter->second + offset_;
+    }
 
-  string Max() const {
-    auto iter = crbegin(credit_to_clients_);
-    return iter == crend(credit_to_clients_) || empty(iter->second)
-               ? ""
-               : *cbegin(iter->second);
-  }
+    void AddAll(int C) { offset_ += C; }
 
-  friend std::ostream& operator<<(std::ostream& os,
-                                  const ClientsCreditsInfo& info) {
-    PrintTo(os, info.credit_to_clients_);
-    return os;
-  }
+    string Max() const {
+        auto iter = crbegin(credit_to_clients_);
+        return iter == crend(credit_to_clients_) || empty(iter->second)
+                   ? ""
+                   : *cbegin(iter->second);
+    }
 
- private:
-  int offset_ = 0;
-  unordered_map<string, int> client_to_credit_;
-  map<int, unordered_set<string>> credit_to_clients_;
+    friend std::ostream &operator<<(std::ostream &os,
+                                    const ClientsCreditsInfo &info) {
+        PrintTo(os, info.credit_to_clients_);
+        return os;
+    }
+
+private:
+    int offset_ = 0;
+    unordered_map<string, int> client_to_credit_;
+    map<int, unordered_set<string> > credit_to_clients_;
 };
 
 struct Operation {
-  std::string op;
-  std::string s_arg;
-  int i_arg;
+    std::string op;
+    std::string s_arg;
+    int i_arg;
 };
 
-std::ostream& operator<<(std::ostream& out, const Operation& op) {
-  return out << FmtStr("{}({}, {})", op.op, op.s_arg, op.i_arg);
+std::ostream &operator<<(std::ostream &out, const Operation &op) {
+    return out << FmtStr("{}({}, {})", op.op, op.s_arg, op.i_arg);
 }
 
 namespace test_framework {
-template <>
-struct SerializationTrait<Operation>
-    : UserSerTrait<Operation, std::string, std::string, int> {};
-}  // namespace test_framework
-void ClientsCreditsInfoTester(const std::vector<Operation>& ops) {
-  ClientsCreditsInfo cr;
-  int op_idx = 0;
-  for (auto& op : ops) {
-    if (op.op == "ClientsCreditsInfo") {
-      continue;
-    } else if (op.op == "remove") {
-      bool result = cr.Remove(op.s_arg);
-      if (result != op.i_arg) {
-        throw TestFailure()
-            .WithProperty(PropertyName::STATE, cr)
-            .WithProperty(PropertyName::COMMAND, op)
-            .WithMismatchInfo(op_idx, op.i_arg, result);
-      }
-    } else if (op.op == "max") {
-      auto result = cr.Max();
-      if (result != op.s_arg) {
-        throw TestFailure()
-            .WithProperty(PropertyName::STATE, cr)
-            .WithProperty(PropertyName::COMMAND, op)
-            .WithMismatchInfo(op_idx, op.i_arg, result);
-      }
-    } else if (op.op == "insert") {
-      cr.Insert(op.s_arg, op.i_arg);
-    } else if (op.op == "add_all") {
-      cr.AddAll(op.i_arg);
-    } else if (op.op == "lookup") {
-      auto result = cr.Lookup(op.s_arg);
-      if (result != op.i_arg) {
-        throw TestFailure()
-            .WithProperty(PropertyName::STATE, cr)
-            .WithProperty(PropertyName::COMMAND, op)
-            .WithMismatchInfo(op_idx, op.i_arg, result);
-        ;
-      }
+    template<>
+    struct SerializationTrait<Operation>
+            : UserSerTrait<Operation, std::string, std::string, int> {
+    };
+} // namespace test_framework
+void ClientsCreditsInfoTester(const std::vector<Operation> &ops) {
+    ClientsCreditsInfo cr;
+    int op_idx = 0;
+    for (auto &op: ops) {
+        if (op.op == "ClientsCreditsInfo") {
+            continue;
+        } else if (op.op == "remove") {
+            bool result = cr.Remove(op.s_arg);
+            if (result != op.i_arg) {
+                throw TestFailure()
+                        .WithProperty(PropertyName::STATE, cr)
+                        .WithProperty(PropertyName::COMMAND, op)
+                        .WithMismatchInfo(op_idx, op.i_arg, result);
+            }
+        } else if (op.op == "max") {
+            auto result = cr.Max();
+            if (result != op.s_arg) {
+                throw TestFailure()
+                        .WithProperty(PropertyName::STATE, cr)
+                        .WithProperty(PropertyName::COMMAND, op)
+                        .WithMismatchInfo(op_idx, op.i_arg, result);
+            }
+        } else if (op.op == "insert") {
+            cr.Insert(op.s_arg, op.i_arg);
+        } else if (op.op == "add_all") {
+            cr.AddAll(op.i_arg);
+        } else if (op.op == "lookup") {
+            auto result = cr.Lookup(op.s_arg);
+            if (result != op.i_arg) {
+                throw TestFailure()
+                        .WithProperty(PropertyName::STATE, cr)
+                        .WithProperty(PropertyName::COMMAND, op)
+                        .WithMismatchInfo(op_idx, op.i_arg, result);;
+            }
+        }
+        op_idx++;
     }
-    op_idx++;
-  }
 }
 
 // clang-format off
