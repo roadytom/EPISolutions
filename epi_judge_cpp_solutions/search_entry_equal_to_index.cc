@@ -6,16 +6,23 @@
 
 using std::vector;
 
-int SearchEntryEqualToItsIndex(const vector<int> &A) {
+int SearchEntryEqualToItsIndex(const vector<int>& A)
+{
     int left = 0, right = size(A) - 1;
-    while (left <= right) {
+    while (left <= right)
+    {
         int mid = left + ((right - left) / 2);
         // A[mid] == mid if and only if difference == 0.
-        if (int difference = A[mid] - mid; difference == 0) {
+        if (int difference = A[mid] - mid; difference == 0)
+        {
             return mid;
-        } else if (difference > 0) {
+        }
+        else if (difference > 0)
+        {
             right = mid - 1;
-        } else {
+        }
+        else
+        {
             // difference < 0.
             left = mid + 1;
         }
@@ -23,17 +30,24 @@ int SearchEntryEqualToItsIndex(const vector<int> &A) {
     return -1;
 }
 
-void SearchEntryEqualToItsIndexWrapper(TimedExecutor &executor,
-                                       const vector<int> &A) {
+void SearchEntryEqualToItsIndexWrapper(TimedExecutor& executor,
+                                       const vector<int>& A)
+{
     int result = executor.Run([&] { return SearchEntryEqualToItsIndex(A); });
 
-    if (result != -1) {
-        if (A[result] != result) {
+    if (result != -1)
+    {
+        if (A[result] != result)
+        {
             throw TestFailure("Entry does not equal to its index");
         }
-    } else {
-        for (int i = 0; i < A.size(); ++i) {
-            if (A[i] == i) {
+    }
+    else
+    {
+        for (int i = 0; i < A.size(); ++i)
+        {
+            if (A[i] == i)
+            {
                 throw TestFailure("There are entries which equal to its index");
             }
         }

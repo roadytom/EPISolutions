@@ -12,29 +12,36 @@ using std::random_device;
 using std::uniform_int_distribution;
 using std::vector;
 
-int ZeroOneRandom() {
+int ZeroOneRandom()
+{
     default_random_engine gen((random_device())());
     uniform_int_distribution<int> dis(0, 1);
     return dis(gen);
 }
 
-int UniformRandom(int lower_bound, int upper_bound) {
+int UniformRandom(int lower_bound, int upper_bound)
+{
     int number_of_outcomes = upper_bound - lower_bound + 1, result;
-    do {
+    do
+    {
         result = 0;
-        for (int i = 0; (1 << i) < number_of_outcomes; ++i) {
+        for (int i = 0; (1 << i) < number_of_outcomes; ++i)
+        {
             // ZeroOneRandom() is the provided random number generator.
             result = (result << 1) | ZeroOneRandom();
         }
-    } while (result >= number_of_outcomes);
+    }
+    while (result >= number_of_outcomes);
     return result + lower_bound;
 }
 
-bool UniformRandomRunner(TimedExecutor &executor, int lower_bound,
-                         int upper_bound) {
+bool UniformRandomRunner(TimedExecutor& executor, int lower_bound,
+                         int upper_bound)
+{
     using namespace test_framework;
     vector<int> result;
-    executor.Run([&] {
+    executor.Run([&]
+    {
         std::generate_n(back_inserter(result), 100000,
                         std::bind(UniformRandom, lower_bound, upper_bound));
     });
@@ -46,13 +53,15 @@ bool UniformRandomRunner(TimedExecutor &executor, int lower_bound,
                                           0.01);
 }
 
-void UniformRandomWrapper(TimedExecutor &executor, int lower_bound,
-                          int upper_bound) {
+void UniformRandomWrapper(TimedExecutor& executor, int lower_bound,
+                          int upper_bound)
+{
     RunFuncWithRetries(
         bind(UniformRandomRunner, std::ref(executor), lower_bound, upper_bound));
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     std::vector<std::string> args{argv + 1, argv + argc};
     std::vector<std::string> param_names{
         "executor", "lower_bound",

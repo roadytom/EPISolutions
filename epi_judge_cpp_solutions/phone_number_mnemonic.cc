@@ -10,9 +10,10 @@ using std::make_unique;
 using std::string;
 using std::vector;
 
-void PhoneMnemonicHelper(const string &, int, string *, vector<string> *);
+void PhoneMnemonicHelper(const string&, int, string*, vector<string>*);
 
-vector<string> PhoneMnemonic(const string &phone_number) {
+vector<string> PhoneMnemonic(const string& phone_number)
+{
     vector<string> mnemonics;
     PhoneMnemonicHelper(phone_number, 0,
                         make_unique<string>(size(phone_number), 0).get(),
@@ -27,15 +28,20 @@ const array<string, kNumTelDigits> kMapping = {
     {"0", "1", "ABC", "DEF", "GHI", "JKL", "MNO", "PQRS", "TUV", "WXYZ"}
 };
 
-void PhoneMnemonicHelper(const string &phone_number, int digit,
-                         string *partial_mnemonic, vector<string> *mnemonics) {
-    if (digit == size(phone_number)) {
+void PhoneMnemonicHelper(const string& phone_number, int digit,
+                         string* partial_mnemonic, vector<string>* mnemonics)
+{
+    if (digit == size(phone_number))
+    {
         // All digits are processed, so add partial_mnemonic to mnemonics.
         // (We add a copy since subsequent calls modify partial_mnemonic.)
         mnemonics->emplace_back(*partial_mnemonic);
-    } else {
+    }
+    else
+    {
         // Try all possible characters for this digit.
-        for (char c: kMapping[phone_number[digit] - '0']) {
+        for (char c : kMapping[phone_number[digit] - '0'])
+        {
             (*partial_mnemonic)[digit] = c;
             PhoneMnemonicHelper(phone_number, digit + 1, partial_mnemonic, mnemonics);
         }

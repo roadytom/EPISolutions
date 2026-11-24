@@ -7,28 +7,37 @@ using std::string;
 using std::vector;
 
 string MajoritySearch(vector<string>::const_iterator stream_begin,
-                      const vector<string>::const_iterator stream_end) {
+                      const vector<string>::const_iterator stream_end)
+{
     string candidate;
     int candidate_count = 0;
-    while (stream_begin != stream_end) {
+    while (stream_begin != stream_end)
+    {
         string it = *stream_begin++;
-        if (candidate_count == 0) {
+        if (candidate_count == 0)
+        {
             candidate = it;
             candidate_count = 1;
-        } else if (candidate == it) {
+        }
+        else if (candidate == it)
+        {
             ++candidate_count;
-        } else {
+        }
+        else
+        {
             --candidate_count;
         }
     }
     return candidate;
 }
 
-string MajoritySearchWrapper(const vector<string> &stream) {
+string MajoritySearchWrapper(const vector<string>& stream)
+{
     return MajoritySearch(cbegin(stream), cend(stream));
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     std::vector<std::string> args{argv + 1, argv + argc};
     std::vector<std::string> param_names{"stream"};
     return GenericTestMain(args, "majority_element.cc", "majority_element.tsv",

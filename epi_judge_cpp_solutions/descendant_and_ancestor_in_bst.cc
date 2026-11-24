@@ -7,27 +7,31 @@
 
 using std::unique_ptr;
 
-bool SearchTarget(const unique_ptr<BstNode<int> > &,
-                  const unique_ptr<BstNode<int> > &);
+bool SearchTarget(const unique_ptr<BstNode<int>>&,
+                  const unique_ptr<BstNode<int>>&);
 
 bool PairIncludesAncestorAndDescendantOfM(
-    const unique_ptr<BstNode<int> > &possible_anc_or_desc_0,
-    const unique_ptr<BstNode<int> > &possible_anc_or_desc_1,
-    const unique_ptr<BstNode<int> > &middle) {
-    auto *search_0 = possible_anc_or_desc_0.get();
-    auto *search_1 = possible_anc_or_desc_1.get();
+    const unique_ptr<BstNode<int>>& possible_anc_or_desc_0,
+    const unique_ptr<BstNode<int>>& possible_anc_or_desc_1,
+    const unique_ptr<BstNode<int>>& middle)
+{
+    auto* search_0 = possible_anc_or_desc_0.get();
+    auto* search_1 = possible_anc_or_desc_1.get();
 
     // Perform interleaved searching from possible_anc_or_desc_0 and
     // possible_anc_or_desc_1 for middle.
     while (search_0 != possible_anc_or_desc_1.get() && search_0 != middle.get() &&
-           search_1 != possible_anc_or_desc_0.get() && search_1 != middle.get() &&
-           (search_0 || search_1)) {
-        if (search_0) {
+        search_1 != possible_anc_or_desc_0.get() && search_1 != middle.get() &&
+        (search_0 || search_1))
+    {
+        if (search_0)
+        {
             search_0 = search_0->data > middle->data
                            ? search_0->left.get()
                            : search_0->right.get();
         }
-        if (search_1) {
+        if (search_1)
+        {
             search_1 = search_1->data > middle->data
                            ? search_1->left.get()
                            : search_1->right.get();
@@ -41,7 +45,8 @@ bool PairIncludesAncestorAndDescendantOfM(
     // possible_anc_or_desc_1.
     if ((search_0 != middle.get() && search_1 != middle.get()) ||
         search_0 == possible_anc_or_desc_1.get() ||
-        search_1 == possible_anc_or_desc_0.get()) {
+        search_1 == possible_anc_or_desc_0.get())
+    {
         return false;
     }
 
@@ -53,22 +58,26 @@ bool PairIncludesAncestorAndDescendantOfM(
                                     : possible_anc_or_desc_0);
 }
 
-bool SearchTarget(const unique_ptr<BstNode<int> > &from,
-                  const unique_ptr<BstNode<int> > &target) {
-    auto *iter = from.get();
-    while (iter && iter != target.get()) {
+bool SearchTarget(const unique_ptr<BstNode<int>>& from,
+                  const unique_ptr<BstNode<int>>& target)
+{
+    auto* iter = from.get();
+    while (iter && iter != target.get())
+    {
         iter = iter->data > target->data ? iter->left.get() : iter->right.get();
     }
     return iter == target.get();
 }
 
 bool PairIncludesAncestorAndDescendantOfMWrapper(
-    TimedExecutor &executor, const unique_ptr<BstNode<int> > &tree,
-    int possible_anc_or_desc_0, int possible_anc_or_desc_1, int middle) {
-    auto &candidate0 = MustFindNode(tree, possible_anc_or_desc_0);
-    auto &candidate1 = MustFindNode(tree, possible_anc_or_desc_1);
-    auto &middle_node = MustFindNode(tree, middle);
-    return executor.Run([&] {
+    TimedExecutor& executor, const unique_ptr<BstNode<int>>& tree,
+    int possible_anc_or_desc_0, int possible_anc_or_desc_1, int middle)
+{
+    auto& candidate0 = MustFindNode(tree, possible_anc_or_desc_0);
+    auto& candidate1 = MustFindNode(tree, possible_anc_or_desc_1);
+    auto& middle_node = MustFindNode(tree, middle);
+    return executor.Run([&]
+    {
         return PairIncludesAncestorAndDescendantOfM(candidate0, candidate1,
                                                     middle_node);
     });

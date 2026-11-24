@@ -17,7 +17,7 @@ void DutchFlagPartitionWrapper(TimedExecutor &executor, const vector<int> &A,
                                int pivot_idx) {
     vector<Color> colors;
     colors.resize(A.size());
-    std::array<int, 3> count = {0, 0, 0};
+    std::array < int, 3 > count = {0, 0, 0};
     for (size_t i = 0; i < A.size(); i++) {
         count[A[i]]++;
         colors[i] = static_cast<Color>(A[i]);
@@ -45,7 +45,8 @@ void DutchFlagPartitionWrapper(TimedExecutor &executor, const vector<int> &A,
     if (i != colors.size()) {
         throw TestFailure("Not partitioned after " + std::to_string(i) +
                           "th element");
-    } else if (count != std::array<int, 3>{0, 0, 0}) {
+    } else if (count != std::array < int, 3 > { 0, 0, 0 })
+    {
         throw TestFailure("Some elements are missing from original array");
     }
 }

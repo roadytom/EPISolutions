@@ -19,4 +19,4 @@ struct BinaryTreeNode {
 };
 
 
-DECLARE_BINARY_TREE_TYPE(KeyT, std::unique_ptr<BinaryTreeNode<KeyT>>, true)
+DECLARE_BINARY_TREE_TYPE(KeyT, std::unique_ptr<BinaryTreeNode<KeyT> >, true)

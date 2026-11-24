@@ -10,22 +10,26 @@ using std::shared_ptr;
 
 struct HeadAndTail;
 
-HeadAndTail BSTToDoublyLinkedListHelper(const shared_ptr<BstNode<int> > &);
+HeadAndTail BSTToDoublyLinkedListHelper(const shared_ptr<BstNode<int>>&);
 
-struct HeadAndTail {
-    shared_ptr<BstNode<int> > head, tail;
+struct HeadAndTail
+{
+    shared_ptr<BstNode<int>> head, tail;
 };
 
-shared_ptr<BstNode<int> > BSTToDoublyLinkedList(
-    const shared_ptr<BstNode<int> > &tree) {
+shared_ptr<BstNode<int>> BSTToDoublyLinkedList(
+    const shared_ptr<BstNode<int>>& tree)
+{
     return BSTToDoublyLinkedListHelper(tree).head;
 }
 
 // Transforms a BST into a sorted doubly linked list in-place,
 // and return the head and tail of the list.
-HeadAndTail BSTToDoublyLinkedListHelper(const shared_ptr<BstNode<int> > &tree) {
+HeadAndTail BSTToDoublyLinkedListHelper(const shared_ptr<BstNode<int>>& tree)
+{
     // Empty subtree.
-    if (!tree) {
+    if (!tree)
+    {
         return {nullptr, nullptr};
     }
 
@@ -34,14 +38,16 @@ HeadAndTail BSTToDoublyLinkedListHelper(const shared_ptr<BstNode<int> > &tree) {
     HeadAndTail right = BSTToDoublyLinkedListHelper(tree->right);
 
     // Appends tree to the list from left subtree.
-    if (left.tail) {
+    if (left.tail)
+    {
         left.tail->right = tree;
     }
     tree->left = left.tail;
 
     // Appends the list from right subtree to tree.
     tree->right = right.head;
-    if (right.head) {
+    if (right.head)
+    {
         right.head->left = tree;
     }
 
@@ -49,17 +55,21 @@ HeadAndTail BSTToDoublyLinkedListHelper(const shared_ptr<BstNode<int> > &tree) {
 }
 
 std::vector<int> BSTToDoublyLinkedListWrapper(
-    TimedExecutor &executor, const std::shared_ptr<BstNode<int> > &tree) {
+    TimedExecutor& executor, const std::shared_ptr<BstNode<int>>& tree)
+{
     auto list = executor.Run([&] { return BSTToDoublyLinkedList(tree); });
 
-    if (list && list->left) {
+    if (list && list->left)
+    {
         throw TestFailure(
             "Function must return the head of the list. Left link must be null");
     }
     std::vector<int> v;
-    while (list) {
+    while (list)
+    {
         v.push_back(list->data);
-        if (list->right && list->right->left != list) {
+        if (list->right && list->right->left != list)
+        {
             throw TestFailure("List is ill-formed");
         }
         list = list->right;

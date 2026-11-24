@@ -6,14 +6,16 @@
 using std::shared_ptr;
 
 
-class PostingListNode {
+class PostingListNode
+{
 public:
     int order;
     shared_ptr<PostingListNode> next;
-    PostingListNode *jump;
+    PostingListNode* jump;
 
     PostingListNode(int order, shared_ptr<PostingListNode> next,
-                    PostingListNode *jump)
-        : order(order), next(next), jump(jump) {
+                    PostingListNode* jump)
+        : order(order), next(next), jump(jump)
+    {
     }
 };

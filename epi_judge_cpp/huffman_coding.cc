@@ -23,13 +23,13 @@ namespace test_framework {
             : UserSerTrait<huffman::CharWithFrequency, std::string, double> {
         static huffman::CharWithFrequency FromTuple(
             const std::tuple<std::string, double> &values) {
-            if (std::get<0>(values).size() != 1) {
+            if (std::get < 0 > (values).size() != 1) {
                 throw std::runtime_error(
                     "CharWithFrequency parser: string length is not 1");
             }
             return huffman::CharWithFrequency{
-                std::get<0>(values)[0],
-                std::get<1>(values)
+                std::get < 0 > (values)[0],
+                std::get < 1 > (values)
             };
         }
     };

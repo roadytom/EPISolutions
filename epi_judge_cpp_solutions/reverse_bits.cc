@@ -5965,16 +5965,18 @@ static array<unsigned long long, 1 << 16> precomputed_reverse{
     61439, 8191, 40959, 24575, 57343, 16383, 49151, 32767, 65535
 };
 
-unsigned long long ReverseBits(unsigned long long x) {
+unsigned long long ReverseBits(unsigned long long x)
+{
     const int kMaskSize = 16;
     const int kBitMask = 0xFFFF;
     return precomputed_reverse[x & kBitMask] << (3 * kMaskSize) |
-           precomputed_reverse[(x >> kMaskSize) & kBitMask] << (2 * kMaskSize) |
-           precomputed_reverse[(x >> (2 * kMaskSize)) & kBitMask] << kMaskSize |
-           precomputed_reverse[(x >> (3 * kMaskSize)) & kBitMask];
+        precomputed_reverse[(x >> kMaskSize) & kBitMask] << (2 * kMaskSize) |
+        precomputed_reverse[(x >> (2 * kMaskSize)) & kBitMask] << kMaskSize |
+        precomputed_reverse[(x >> (3 * kMaskSize)) & kBitMask];
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     std::vector<std::string> args{argv + 1, argv + argc};
     std::vector<std::string> param_names{"x"};
     return GenericTestMain(args, "reverse_bits.cc", "reverse_bits.tsv",

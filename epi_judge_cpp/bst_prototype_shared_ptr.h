@@ -18,4 +18,4 @@ struct BstNode {
 };
 
 
-DECLARE_BINARY_TREE_TYPE(KeyT, std::shared_ptr<BstNode<KeyT>>, false)
+DECLARE_BINARY_TREE_TYPE(KeyT, std::shared_ptr<BstNode<KeyT> >, false)

@@ -8,21 +8,28 @@
 
 using std::vector;
 
-vector<int> SortKIncreasingDecreasingArray(const vector<int> &A) {
+vector<int> SortKIncreasingDecreasingArray(const vector<int>& A)
+{
     // Decomposes A into a set of sorted arrays.
-    vector<vector<int> > sorted_subarrays;
-    enum class SubarrayType {
+    vector<vector<int>> sorted_subarrays;
+    enum class SubarrayType
+    {
         kIncreasing,
         kDecreasing
     } subarray_type = SubarrayType::kIncreasing;
     int start_idx = 0;
-    for (int i = 1; i <= size(A); ++i) {
+    for (int i = 1; i <= size(A); ++i)
+    {
         if (i == size(A) || // A is ended. Adds the last subarray.
             (A[i - 1] < A[i] && subarray_type == SubarrayType::kDecreasing) ||
-            (A[i - 1] >= A[i] && subarray_type == SubarrayType::kIncreasing)) {
-            if (subarray_type == SubarrayType::kIncreasing) {
+            (A[i - 1] >= A[i] && subarray_type == SubarrayType::kIncreasing))
+        {
+            if (subarray_type == SubarrayType::kIncreasing)
+            {
                 sorted_subarrays.emplace_back(cbegin(A) + start_idx, cbegin(A) + i);
-            } else {
+            }
+            else
+            {
                 sorted_subarrays.emplace_back(crbegin(A) + size(A) - i,
                                               crbegin(A) + size(A) - start_idx);
             }

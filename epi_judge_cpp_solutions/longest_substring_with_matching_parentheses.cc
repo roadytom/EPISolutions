@@ -10,15 +10,22 @@ using std::stack;
 using std::string;
 using std::vector;
 
-int LongestMatchingParentheses(const string &s) {
+int LongestMatchingParentheses(const string& s)
+{
     int max_length = 0, end = -1;
     stack<int> left_parentheses_indices;
-    for (int i = 0; i < size(s); ++i) {
-        if (s[i] == '(') {
+    for (int i = 0; i < size(s); ++i)
+    {
+        if (s[i] == '(')
+        {
             left_parentheses_indices.emplace(i);
-        } else if (empty(left_parentheses_indices)) {
+        }
+        else if (empty(left_parentheses_indices))
+        {
             end = i;
-        } else {
+        }
+        else
+        {
             left_parentheses_indices.pop();
             int start = empty(left_parentheses_indices)
                             ? end
@@ -29,19 +36,28 @@ int LongestMatchingParentheses(const string &s) {
     return max_length;
 }
 
-template<typename IterType>
-int ParseFromSide(char paren, IterType begin, IterType end) {
+template <typename IterType>
+int ParseFromSide(char paren, IterType begin, IterType end)
+{
     int max_length = 0, num_parens_so_far = 0, length = 0;
-    for (IterType i = begin; i < end; ++i) {
-        if (*i == paren) {
+    for (IterType i = begin; i < end; ++i)
+    {
+        if (*i == paren)
+        {
             ++num_parens_so_far, ++length;
-        } else {
+        }
+        else
+        {
             // *i != paren
-            if (num_parens_so_far <= 0) {
+            if (num_parens_so_far <= 0)
+            {
                 num_parens_so_far = length = 0;
-            } else {
+            }
+            else
+            {
                 --num_parens_so_far, ++length;
-                if (num_parens_so_far == 0) {
+                if (num_parens_so_far == 0)
+                {
                     max_length = max(max_length, length);
                 }
             }
@@ -50,7 +66,8 @@ int ParseFromSide(char paren, IterType begin, IterType end) {
     return max_length;
 }
 
-int LongestMatchingParenthesesConstantSpace(const string &s) {
+int LongestMatchingParenthesesConstantSpace(const string& s)
+{
     return max(ParseFromSide('(', begin(s), end(s)),
                ParseFromSide(')', rbegin(s), rend(s)));
 }

@@ -22,4 +22,4 @@ struct BstNode {
 };
 
 
-DECLARE_BINARY_TREE_TYPE(KeyT, std::unique_ptr<BstNode<KeyT>>, false)
+DECLARE_BINARY_TREE_TYPE(KeyT, std::unique_ptr<BstNode<KeyT> >, false)

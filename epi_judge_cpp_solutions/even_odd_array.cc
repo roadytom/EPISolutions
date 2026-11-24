@@ -10,41 +10,54 @@
 using std::swap;
 using std::vector;
 
-void EvenOdd(vector<int> *A_ptr) {
-    vector<int> &A = *A_ptr;
+void EvenOdd(vector<int>* A_ptr)
+{
+    vector<int>& A = *A_ptr;
     int next_even = 0, next_odd = size(A) - 1;
-    while (next_even < next_odd) {
-        if (A[next_even] % 2 == 0) {
+    while (next_even < next_odd)
+    {
+        if (A[next_even] % 2 == 0)
+        {
             ++next_even;
-        } else {
+        }
+        else
+        {
             swap(A[next_even], A[next_odd--]);
         }
     }
 }
 
-void EvenOddWrapper(TimedExecutor &executor, vector<int> A) {
+void EvenOddWrapper(TimedExecutor& executor, vector<int> A)
+{
     std::multiset<int> before(begin(A), end(A));
 
     executor.Run([&] { EvenOdd(&A); });
 
     bool in_odd = false;
-    for (int a: A) {
-        if (a % 2 == 0) {
-            if (in_odd) {
+    for (int a : A)
+    {
+        if (a % 2 == 0)
+        {
+            if (in_odd)
+            {
                 throw TestFailure("Even elements appear in odd part");
             }
-        } else {
+        }
+        else
+        {
             in_odd = true;
         }
     }
 
     std::multiset<int> after(begin(A), end(A));
-    if (before != after) {
+    if (before != after)
+    {
         throw TestFailure("Elements mismatch");
     }
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     std::vector<std::string> args{argv + 1, argv + argc};
     std::vector<std::string> param_names{"executor", "A"};
     return GenericTestMain(args, "even_odd_array.cc", "even_odd_array.tsv",

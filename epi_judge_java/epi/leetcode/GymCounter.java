@@ -37,7 +37,6 @@ public class GymCounter {
         }
         int ans = 0;
         for (int saturday : saturdays) {
-            Math.floorMod()
             if (sundays.contains(saturday + 1)) {
                 ans++;
             }

@@ -10,25 +10,29 @@ using std::make_unique;
 using std::stack;
 using std::vector;
 
-bool DirectedExpressionSynthesis(const vector<int> &, int, int, int,
-                                 vector<int> *, vector<char> *);
+bool DirectedExpressionSynthesis(const vector<int>&, int, int, int,
+                                 vector<int>*, vector<char>*);
 
-int Evaluate(const vector<int> &, const vector<char> &);
+int Evaluate(const vector<int>&, const vector<char>&);
 
-bool ExpressionSynthesis(const vector<int> &digits, int target) {
+bool ExpressionSynthesis(const vector<int>& digits, int target)
+{
     return DirectedExpressionSynthesis(digits, target, 0, 0,
-                                       make_unique<vector<int> >().get(),
-                                       make_unique<vector<char> >().get());
+                                       make_unique<vector<int>>().get(),
+                                       make_unique<vector<char>>().get());
 }
 
-bool DirectedExpressionSynthesis(const vector<int> &digits, int target,
+bool DirectedExpressionSynthesis(const vector<int>& digits, int target,
                                  int current_term, int offset,
-                                 vector<int> *operands,
-                                 vector<char> *operators) {
+                                 vector<int>* operands,
+                                 vector<char>* operators)
+{
     current_term = current_term * 10 + digits[offset];
-    if (offset == size(digits) - 1) {
+    if (offset == size(digits) - 1)
+    {
         operands->emplace_back(current_term);
-        if (Evaluate(*operands, *operators) == target) {
+        if (Evaluate(*operands, *operators) == target)
+        {
             // Found a match.
             return true;
         }
@@ -38,13 +42,15 @@ bool DirectedExpressionSynthesis(const vector<int> &digits, int target,
 
     // No operator.
     if (DirectedExpressionSynthesis(digits, target, current_term, offset + 1,
-                                    operands, operators)) {
+                                    operands, operators))
+    {
         return true;
     }
     // Tries multiplication operator '*'.
     operands->emplace_back(current_term), operators->emplace_back('*');
     if (DirectedExpressionSynthesis(digits, target, /*current_term=*/0,
-                                    offset + 1, operands, operators)) {
+                                    offset + 1, operands, operators))
+    {
         return true;
     }
     operands->pop_back(), operators->pop_back();
@@ -53,10 +59,12 @@ bool DirectedExpressionSynthesis(const vector<int> &digits, int target,
     // First check feasibility of plus operator.
     if (target - Evaluate(*operands, *operators) <=
         accumulate(begin(digits) + offset + 1, end(digits), 0,
-                   [](int val, int d) { return val * 10 + d; })) {
+                   [](int val, int d) { return val * 10 + d; }))
+    {
         operators->emplace_back('+');
         if (DirectedExpressionSynthesis(digits, target, /*current_term=*/0,
-                                        offset + 1, operands, operators)) {
+                                        offset + 1, operands, operators))
+        {
             return true;
         }
         operators->pop_back();
@@ -65,17 +73,22 @@ bool DirectedExpressionSynthesis(const vector<int> &digits, int target,
     return false;
 }
 
-int Evaluate(const vector<int> &operands, const vector<char> &operators) {
+int Evaluate(const vector<int>& operands, const vector<char>& operators)
+{
     stack<int> intermediate_operands;
     int operand_idx = 0;
     intermediate_operands.push(operands[operand_idx++]);
     // Evaluates '*' first.
-    for (char oper: operators) {
-        if (oper == '*') {
+    for (char oper : operators)
+    {
+        if (oper == '*')
+        {
             int product = intermediate_operands.top() * operands[operand_idx++];
             intermediate_operands.pop();
             intermediate_operands.push(product);
-        } else {
+        }
+        else
+        {
             // oper == '+'.
             intermediate_operands.push(operands[operand_idx++]);
         }
@@ -83,14 +96,16 @@ int Evaluate(const vector<int> &operands, const vector<char> &operators) {
 
     // Evaluates '+' second.
     int sum = 0;
-    while (!empty(intermediate_operands)) {
+    while (!empty(intermediate_operands))
+    {
         sum += intermediate_operands.top();
         intermediate_operands.pop();
     }
     return sum;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     std::vector<std::string> args{argv + 1, argv + argc};
     std::vector<std::string> param_names{"digits", "target"};
     return GenericTestMain(args, "insert_operators_in_string.cc",

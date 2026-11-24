@@ -6,20 +6,23 @@
 
 using std::vector;
 
-void RotateArray(int rotate_amount, vector<int> *A) {
+void RotateArray(int rotate_amount, vector<int>* A)
+{
     rotate_amount %= size(*A);
     reverse(begin(*A), end(*A));
     reverse(begin(*A), begin(*A) + rotate_amount);
     reverse(begin(*A) + rotate_amount, end(*A));
 }
 
-vector<int> RotateArrayWrapper(TimedExecutor &executor, vector<int> A,
-                               int rotate_amount) {
+vector<int> RotateArrayWrapper(TimedExecutor& executor, vector<int> A,
+                               int rotate_amount)
+{
     executor.Run([&] { RotateArray(rotate_amount, &A); });
     return A;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     std::vector<std::string> args{argv + 1, argv + argc};
     std::vector<std::string> param_names{"executor", "A", "rotate_amount"};
     return GenericTestMain(args, "rotate_array.cc", "rotate_array.tsv",

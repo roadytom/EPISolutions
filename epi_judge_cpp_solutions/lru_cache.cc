@@ -12,18 +12,25 @@ using std::list;
 using std::pair;
 using std::unordered_map;
 
-class LruCache {
+class LruCache
+{
 public:
-    LruCache(size_t capacity) {
+    LruCache(size_t capacity)
+    {
     }
 
-    explicit LruCache(int capacity) : capacity_(capacity) {
+    explicit LruCache(int capacity) : capacity_(capacity)
+    {
     }
 
-    int Lookup(int isbn) {
-        if (auto it = isbn_price_table_.find(isbn); it == end(isbn_price_table_)) {
+    int Lookup(int isbn)
+    {
+        if (auto it = isbn_price_table_.find(isbn); it == end(isbn_price_table_))
+        {
             return -1;
-        } else {
+        }
+        else
+        {
             int price = it->second.second;
             // Since key has just been accessed, move it to the front.
             MoveToFront(isbn, it);
@@ -31,14 +38,19 @@ public:
         }
     }
 
-    void Insert(int isbn, int price) {
+    void Insert(int isbn, int price)
+    {
         // We add the value for key only if key is not present - we don't update
         // existing values.
-        if (auto it = isbn_price_table_.find(isbn); it != end(isbn_price_table_)) {
+        if (auto it = isbn_price_table_.find(isbn); it != end(isbn_price_table_))
+        {
             // Specification says we should make isbn the most recently used.
             MoveToFront(isbn, it);
-        } else {
-            if (size(isbn_price_table_) == capacity_) {
+        }
+        else
+        {
+            if (size(isbn_price_table_) == capacity_)
+            {
                 // Removes the least recently used ISBN to get space.
                 isbn_price_table_.erase(lru_queue_.back());
                 lru_queue_.pop_back();
@@ -48,10 +60,14 @@ public:
         }
     }
 
-    bool Erase(int isbn) {
-        if (auto it = isbn_price_table_.find(isbn); it == end(isbn_price_table_)) {
+    bool Erase(int isbn)
+    {
+        if (auto it = isbn_price_table_.find(isbn); it == end(isbn_price_table_))
+        {
             return false;
-        } else {
+        }
+        else
+        {
             lru_queue_.erase(it->second.first);
             isbn_price_table_.erase(it);
             return true;
@@ -59,10 +75,11 @@ public:
     }
 
 private:
-    using Table = unordered_map<int, pair<list<int>::iterator, int> >;
+    using Table = unordered_map<int, pair<list<int>::iterator, int>>;
 
     // Forces this key-value pair to move to the front.
-    void MoveToFront(int isbn, const Table::iterator &it) {
+    void MoveToFront(int isbn, const Table::iterator& it)
+    {
         lru_queue_.erase(it->second.first);
         lru_queue_.emplace_front(isbn);
         it->second.first = begin(lru_queue_);
@@ -73,41 +90,56 @@ private:
     list<int> lru_queue_;
 };
 
-struct Op {
+struct Op
+{
     std::string code;
     int arg1;
     int arg2;
 };
 
-namespace test_framework {
-    template<>
-    struct SerializationTrait<Op> : UserSerTrait<Op, std::string, int, int> {
+namespace test_framework
+{
+    template <>
+    struct SerializationTrait<Op> : UserSerTrait<Op, std::string, int, int>
+    {
     };
 } // namespace test_framework
 
-void LruCacheTester(const std::vector<Op> &commands) {
-    if (commands.empty() || commands[0].code != "LruCache") {
+void LruCacheTester(const std::vector<Op>& commands)
+{
+    if (commands.empty() || commands[0].code != "LruCache")
+    {
         throw std::runtime_error("Expected LruCache as first command");
     }
     LruCache cache(commands[0].arg1);
 
-    for (int i = 1; i < commands.size(); i++) {
-        auto &cmd = commands[i];
-        if (cmd.code == "lookup") {
+    for (int i = 1; i < commands.size(); i++)
+    {
+        auto& cmd = commands[i];
+        if (cmd.code == "lookup")
+        {
             int result = cache.Lookup(cmd.arg1);
-            if (result != cmd.arg2) {
+            if (result != cmd.arg2)
+            {
                 throw TestFailure("Lookup: expected " + std::to_string(cmd.arg2) +
-                                  ", got " + std::to_string(result));
+                    ", got " + std::to_string(result));
             }
-        } else if (cmd.code == "insert") {
+        }
+        else if (cmd.code == "insert")
+        {
             cache.Insert(cmd.arg1, cmd.arg2);
-        } else if (cmd.code == "erase") {
+        }
+        else if (cmd.code == "erase")
+        {
             bool result = cache.Erase(cmd.arg1);
-            if (result != cmd.arg2) {
+            if (result != cmd.arg2)
+            {
                 throw TestFailure("Erase: expected " + std::to_string(cmd.arg2) +
-                                  ", got " + std::to_string(result));
+                    ", got " + std::to_string(result));
             }
-        } else {
+        }
+        else
+        {
             throw std::runtime_error("Unexpected command " + cmd.code);
         }
     }

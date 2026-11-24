@@ -11,13 +11,15 @@ using std::unique_ptr;
 using std::unordered_map;
 using std::vector;
 
-unique_ptr<BinaryTreeNode<int> > BinaryTreeFromPreorderInorderHelper(
-    const vector<int> &, int, int, int, int, const unordered_map<int, int> &);
+unique_ptr<BinaryTreeNode<int>> BinaryTreeFromPreorderInorderHelper(
+    const vector<int>&, int, int, int, int, const unordered_map<int, int>&);
 
-unique_ptr<BinaryTreeNode<int> > BinaryTreeFromPreorderInorder(
-    const vector<int> &preorder, const vector<int> &inorder) {
+unique_ptr<BinaryTreeNode<int>> BinaryTreeFromPreorderInorder(
+    const vector<int>& preorder, const vector<int>& inorder)
+{
     unordered_map<int, int> node_to_inorder_idx;
-    for (int i = 0; i < size(inorder); ++i) {
+    for (int i = 0; i < size(inorder); ++i)
+    {
         node_to_inorder_idx.emplace(inorder[i], i);
     }
     return BinaryTreeFromPreorderInorderHelper(
@@ -27,17 +29,19 @@ unique_ptr<BinaryTreeNode<int> > BinaryTreeFromPreorderInorder(
 
 // Builds the subtree with preorder[preorder_start, preorder_end - 1] and
 // inorder[inorder_start, inorder_end - 1].
-unique_ptr<BinaryTreeNode<int> > BinaryTreeFromPreorderInorderHelper(
-    const vector<int> &preorder, int preorder_start, int preorder_end,
+unique_ptr<BinaryTreeNode<int>> BinaryTreeFromPreorderInorderHelper(
+    const vector<int>& preorder, int preorder_start, int preorder_end,
     int inorder_start, int inorder_end,
-    const unordered_map<int, int> &node_to_inorder_idx) {
-    if (preorder_end <= preorder_start || inorder_end <= inorder_start) {
+    const unordered_map<int, int>& node_to_inorder_idx)
+{
+    if (preorder_end <= preorder_start || inorder_end <= inorder_start)
+    {
         return nullptr;
     }
     size_t root_inorder_idx = node_to_inorder_idx.at(preorder[preorder_start]);
     size_t left_subtree_size = root_inorder_idx - inorder_start;
 
-    return make_unique<BinaryTreeNode<int> >(
+    return make_unique<BinaryTreeNode<int>>(
         preorder[preorder_start],
         // Recursively builds the left subtree.
         BinaryTreeFromPreorderInorderHelper(

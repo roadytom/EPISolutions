@@ -8,15 +8,18 @@
 
 using std::shared_ptr;
 
-shared_ptr<ListNode<int> > ZippingLinkedList(
-    const shared_ptr<ListNode<int> > &L) {
-    if (!L || !L->next) {
+shared_ptr<ListNode<int>> ZippingLinkedList(
+    const shared_ptr<ListNode<int>>& L)
+{
+    if (!L || !L->next)
+    {
         return L;
     }
 
     // Finds the second half of L.
     auto slow = L, fast = L;
-    while (fast && fast->next) {
+    while (fast && fast->next)
+    {
         fast = fast->next->next, slow = slow->next;
     }
 
@@ -27,7 +30,8 @@ shared_ptr<ListNode<int> > ZippingLinkedList(
 
     // Interleave the first half and the reversed of the second half.
     auto first_half_iter = first_half_head, second_half_iter = second_half_head;
-    while (second_half_iter) {
+    while (second_half_iter)
+    {
         auto temp = second_half_iter->next;
         second_half_iter->next = first_half_iter->next;
         first_half_iter->next = second_half_iter;
@@ -37,7 +41,8 @@ shared_ptr<ListNode<int> > ZippingLinkedList(
     return first_half_head;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     std::vector<std::string> args{argv + 1, argv + argc};
     std::vector<std::string> param_names{"L"};
     return GenericTestMain(args, "zip_list.cc", "zip_list.tsv",

@@ -29,7 +29,8 @@ BinaryTreeNode<int> *Lca(const unique_ptr<BinaryTreeNode<int> > &tree,
         if (right_res.res != nullptr) {
             return right_res;
         }
-        int total = left_res.one_found + right_res.one_found + static_cast<int>(me_equal1) + static_cast<int>(me_equal2);
+        int total = left_res.one_found + right_res.one_found + static_cast<int>(me_equal1) + static_cast<int>(
+                        me_equal2);
         if (total == 2) {
             return result{node.get(), 1};
         }

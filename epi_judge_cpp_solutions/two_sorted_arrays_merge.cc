@@ -4,18 +4,22 @@
 
 using std::vector;
 
-void MergeTwoSortedArrays(vector<int> &A, int m, const vector<int> &B, int n) {
+void MergeTwoSortedArrays(vector<int>& A, int m, const vector<int>& B, int n)
+{
     int a = m - 1, b = n - 1, write_idx = m + n - 1;
-    while (a >= 0 && b >= 0) {
+    while (a >= 0 && b >= 0)
+    {
         A[write_idx--] = A[a] > B[b] ? A[a--] : B[b--];
     }
-    while (b >= 0) {
+    while (b >= 0)
+    {
         A[write_idx--] = B[b--];
     }
 }
 
 vector<int> MergeTwoSortedArraysWrapper(vector<int> A, int m,
-                                        const vector<int> &B, int n) {
+                                        const vector<int>& B, int n)
+{
     MergeTwoSortedArrays(A, m, B, n);
     return A;
 }

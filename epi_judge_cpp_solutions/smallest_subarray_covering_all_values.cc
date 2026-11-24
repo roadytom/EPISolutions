@@ -12,17 +12,20 @@ using std::string;
 using std::unordered_map;
 using std::vector;
 
-struct Subarray {
+struct Subarray
+{
     // Represent subarray by starting and ending indices, inclusive.
     int start, end;
 };
 
 Subarray FindSmallestSequentiallyCoveringSubset(
-    const vector<string> &paragraph, const vector<string> &keywords) {
+    const vector<string>& paragraph, const vector<string>& keywords)
+{
     // Maps each keyword to its index in the keywords array.
     unordered_map<string, int> keyword_to_idx;
     // Initializes keyword_to_idx.
-    for (int i = 0; i < size(keywords); ++i) {
+    for (int i = 0; i < size(keywords); ++i)
+    {
         keyword_to_idx.emplace(keywords[i], i);
     }
 
@@ -37,25 +40,31 @@ Subarray FindSmallestSequentiallyCoveringSubset(
 
     int shortest_distance = numeric_limits<int>::max();
     Subarray result = Subarray{-1, -1};
-    for (int i = 0; i < size(paragraph); ++i) {
-        if (keyword_to_idx.count(paragraph[i])) {
+    for (int i = 0; i < size(paragraph); ++i)
+    {
+        if (keyword_to_idx.count(paragraph[i]))
+        {
             int keyword_idx = keyword_to_idx.find(paragraph[i])->second;
-            if (keyword_idx == 0) {
+            if (keyword_idx == 0)
+            {
                 // First keyword.
                 shortest_subarray_length[keyword_idx] = 1;
-            } else if (shortest_subarray_length[keyword_idx - 1] !=
-                       numeric_limits<int>::max()) {
+            }
+            else if (shortest_subarray_length[keyword_idx - 1] !=
+                numeric_limits<int>::max())
+            {
                 int distance_to_previous_keyword =
-                        i - latest_occurrence[keyword_idx - 1];
+                    i - latest_occurrence[keyword_idx - 1];
                 shortest_subarray_length[keyword_idx] =
-                        distance_to_previous_keyword +
-                        shortest_subarray_length[keyword_idx - 1];
+                    distance_to_previous_keyword +
+                    shortest_subarray_length[keyword_idx - 1];
             }
             latest_occurrence[keyword_idx] = i;
 
             // Last keyword, look for improved subarray.
             if (keyword_idx == size(keywords) - 1 &&
-                shortest_subarray_length.back() < shortest_distance) {
+                shortest_subarray_length.back() < shortest_distance)
+            {
                 shortest_distance = shortest_subarray_length.back();
                 result = {i - shortest_subarray_length.back() + 1, i};
             }
@@ -65,26 +74,33 @@ Subarray FindSmallestSequentiallyCoveringSubset(
 }
 
 int FindSmallestSequentiallyCoveringSubsetWrapper(
-    TimedExecutor &executor, const vector<string> &paragraph,
-    const vector<string> &keywords) {
-    auto result = executor.Run([&] {
+    TimedExecutor& executor, const vector<string>& paragraph,
+    const vector<string>& keywords)
+{
+    auto result = executor.Run([&]
+    {
         return FindSmallestSequentiallyCoveringSubset(paragraph, keywords);
     });
 
     int kw_idx = 0;
-    if (result.start < 0) {
+    if (result.start < 0)
+    {
         throw TestFailure("Subarray start index is negative");
     }
     int para_idx = result.start;
 
-    while (kw_idx < keywords.size()) {
-        if (para_idx >= paragraph.size()) {
+    while (kw_idx < keywords.size())
+    {
+        if (para_idx >= paragraph.size())
+        {
             throw TestFailure("Not all keywords are in the generated subarray");
         }
-        if (para_idx >= paragraph.size()) {
+        if (para_idx >= paragraph.size())
+        {
             throw TestFailure("Subarray end index exceeds array size");
         }
-        if (paragraph[para_idx] == keywords[kw_idx]) {
+        if (paragraph[para_idx] == keywords[kw_idx])
+        {
             kw_idx++;
         }
         para_idx++;

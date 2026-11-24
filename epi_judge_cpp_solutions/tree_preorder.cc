@@ -8,18 +8,24 @@ using std::pair;
 using std::stack;
 using std::vector;
 
-vector<int> PreorderTraversal(const unique_ptr<BinaryTreeNode<int> > &tree) {
+vector<int> PreorderTraversal(const unique_ptr<BinaryTreeNode<int>>& tree)
+{
     vector<int> result;
 
-    stack<pair<const BinaryTreeNode<int> *, bool> > in_process;
+    stack<pair<const BinaryTreeNode<int>*, bool>> in_process;
     in_process.emplace(tree.get(), false);
-    while (!empty(in_process)) {
+    while (!empty(in_process))
+    {
         auto [node, node_processed] = in_process.top();
         in_process.pop();
-        if (node) {
-            if (node_processed) {
+        if (node)
+        {
+            if (node_processed)
+            {
                 result.emplace_back(node->data);
-            } else {
+            }
+            else
+            {
                 in_process.emplace(node->right.get(), false);
                 in_process.emplace(node->left.get(), false);
                 in_process.emplace(node, true);

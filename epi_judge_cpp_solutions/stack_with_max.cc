@@ -10,73 +10,99 @@ using std::length_error;
 using std::max;
 using std::stack;
 
-class Stack {
+class Stack
+{
 public:
     bool Empty() const { return empty(element_with_cached_max_); }
 
     int Max() const { return element_with_cached_max_.top().max; }
 
-    int Pop() {
+    int Pop()
+    {
         int pop_element = element_with_cached_max_.top().element;
         element_with_cached_max_.pop();
         return pop_element;
     }
 
-    void Push(int x) {
+    void Push(int x)
+    {
         element_with_cached_max_.emplace(
             ElementWithCachedMax{x, max(x, Empty() ? x : Max())});
     }
 
 private:
-    struct ElementWithCachedMax {
+    struct ElementWithCachedMax
+    {
         int element, max;
     };
 
     stack<ElementWithCachedMax> element_with_cached_max_;
 };
 
-struct StackOp {
+struct StackOp
+{
     std::string op;
     int argument;
 };
 
-namespace test_framework {
-    template<>
-    struct SerializationTrait<StackOp> : UserSerTrait<StackOp, std::string, int> {
+namespace test_framework
+{
+    template <>
+    struct SerializationTrait<StackOp> : UserSerTrait<StackOp, std::string, int>
+    {
     };
 } // namespace test_framework
 
-void StackTester(const std::vector<StackOp> &ops) {
-    try {
+void StackTester(const std::vector<StackOp>& ops)
+{
+    try
+    {
         Stack s;
-        for (auto &x: ops) {
-            if (x.op == "Stack") {
+        for (auto& x : ops)
+        {
+            if (x.op == "Stack")
+            {
                 continue;
-            } else if (x.op == "push") {
+            }
+            else if (x.op == "push")
+            {
                 s.Push(x.argument);
-            } else if (x.op == "pop") {
+            }
+            else if (x.op == "pop")
+            {
                 int result = s.Pop();
-                if (result != x.argument) {
+                if (result != x.argument)
+                {
                     throw TestFailure("Pop: expected " + std::to_string(x.argument) +
-                                      ", got " + std::to_string(result));
+                        ", got " + std::to_string(result));
                 }
-            } else if (x.op == "max") {
+            }
+            else if (x.op == "max")
+            {
                 int result = s.Max();
-                if (result != x.argument) {
+                if (result != x.argument)
+                {
                     throw TestFailure("Max: expected " + std::to_string(x.argument) +
-                                      ", got " + std::to_string(result));
+                        ", got " + std::to_string(result));
                 }
-            } else if (x.op == "empty") {
+            }
+            else if (x.op == "empty")
+            {
                 int result = s.Empty();
-                if (result != x.argument) {
+                if (result != x.argument)
+                {
                     throw TestFailure("Empty: expected " + std::to_string(x.argument) +
-                                      ", got " + std::to_string(result));
+                        ", got " + std::to_string(result));
                 }
-            } else {
+            }
+            else
+            {
                 throw std::runtime_error("Unsupported stack operation: " + x.op);
             }
         }
-    } catch (length_error &) {
+    }
+    catch (length_error&)
+    {
         throw TestFailure("Unexpected length_error exception");
     }
 }

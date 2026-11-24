@@ -6,11 +6,13 @@
 using std::swap;
 using std::vector;
 
-vector<int> NextPermutation(vector<int> perm) {
+vector<int> NextPermutation(vector<int> perm)
+{
     // Find the first entry from the right that is smaller than the entry
     // immediately after it.
     auto inversion_point = is_sorted_until(rbegin(perm), rend(perm));
-    if (inversion_point == rend(perm)) {
+    if (inversion_point == rend(perm))
+    {
         // perm is sorted in decreasing order, so it's the last permutation.
         return {};
     }
@@ -24,7 +26,7 @@ vector<int> NextPermutation(vector<int> perm) {
     //     decreasing order after inversion_point, we can use a fast algorithm
     //     to find this entry.
     auto least_upper_bound =
-            upper_bound(rbegin(perm), inversion_point, *inversion_point);
+        upper_bound(rbegin(perm), inversion_point, *inversion_point);
 
     // 2.) Perform the swap.
     iter_swap(inversion_point, least_upper_bound);
@@ -34,7 +36,8 @@ vector<int> NextPermutation(vector<int> perm) {
     return perm;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     std::vector<std::string> args{argv + 1, argv + argc};
     std::vector<std::string> param_names{"perm"};
     return GenericTestMain(args, "next_permutation.cc", "next_permutation.tsv",

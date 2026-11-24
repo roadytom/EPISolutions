@@ -11,17 +11,21 @@ using std::vector;
 
 struct Interval;
 
-struct Interval {
+struct Interval
+{
     int left, right;
 };
 
-int FindMinimumVisits(vector<Interval> intervals) {
+int FindMinimumVisits(vector<Interval> intervals)
+{
     // Sort intervals based on the right endpoints.
     sort(begin(intervals), end(intervals),
-         [](const Interval &a, const Interval &b) { return a.right < b.right; });
+         [](const Interval& a, const Interval& b) { return a.right < b.right; });
     int last_visit_time = numeric_limits<int>::min(), num_visits = 0;
-    for (const Interval &interval: intervals) {
-        if (interval.left > last_visit_time) {
+    for (const Interval& interval : intervals)
+    {
+        if (interval.left > last_visit_time)
+        {
             // The current right endpoint, last_visit_time, will not cover any more
             // intervals.
             last_visit_time = interval.right;
@@ -31,13 +35,16 @@ int FindMinimumVisits(vector<Interval> intervals) {
     return num_visits;
 }
 
-namespace test_framework {
-    template<>
-    struct SerializationTrait<Interval> : UserSerTrait<Interval, int, int> {
+namespace test_framework
+{
+    template <>
+    struct SerializationTrait<Interval> : UserSerTrait<Interval, int, int>
+    {
     };
 } // namespace test_framework
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     std::vector<std::string> args{argv + 1, argv + argc};
     std::vector<std::string> param_names{"intervals"};
     return GenericTestMain(args, "minimum_points_covering_intervals.cc",

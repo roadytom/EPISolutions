@@ -7,17 +7,25 @@ using std::exception;
 using std::max;
 using std::vector;
 
-int BinarySearchUnknownLength(const vector<int> &A, int k) {
+int BinarySearchUnknownLength(const vector<int>& A, int k)
+{
     // Find the possible range where k exists.
     int p = 0;
-    while (true) {
-        try {
-            if (int idx = (1 << p) - 1; A.at(idx) == k) {
+    while (true)
+    {
+        try
+        {
+            if (int idx = (1 << p) - 1; A.at(idx) == k)
+            {
                 return idx;
-            } else if (A.at(idx) > k) {
+            }
+            else if (A.at(idx) > k)
+            {
                 break;
             }
-        } catch (const exception &) {
+        }
+        catch (const exception&)
+        {
             break;
         }
         ++p;
@@ -25,18 +33,27 @@ int BinarySearchUnknownLength(const vector<int> &A, int k) {
 
     // Binary search between indices 2^(p - 1) and 2^p - 2, inclusive.
     int left = max(0, 1 << (p - 1)), right = (1 << p) - 2;
-    while (left <= right) {
+    while (left <= right)
+    {
         int mid = left + ((right - left) / 2);
-        try {
-            if (A.at(mid) == k) {
+        try
+        {
+            if (A.at(mid) == k)
+            {
                 return mid;
-            } else if (A.at(mid) > k) {
+            }
+            else if (A.at(mid) > k)
+            {
                 right = mid - 1;
-            } else {
+            }
+            else
+            {
                 // A.at(mid) < k
                 left = mid + 1;
             }
-        } catch (const exception &) {
+        }
+        catch (const exception&)
+        {
             right = mid - 1; // Search the left part if out-of-bound.
         }
     }

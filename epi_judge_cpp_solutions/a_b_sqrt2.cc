@@ -12,21 +12,25 @@ using std::vector;
 // These numbers have very interesting property, and people called it ugly
 // numbers. It is also called Quadratic integer rings.
 
-struct Number {
-    Number(int a, int b) : a(a), b(b), val(a + b * sqrt(2)) {
+struct Number
+{
+    Number(int a, int b) : a(a), b(b), val(a + b * sqrt(2))
+    {
     }
 
     int a, b;
     double val;
 };
 
-vector<double> GenerateFirstKABSqrt2(int k) {
+vector<double> GenerateFirstKABSqrt2(int k)
+{
     // Initial for 0 + 0 * sqrt(2).
-    set<Number, function<bool(Number, Number)> > candidates(
-        {{0, 0}}, [](const Number &a, const Number &b) { return a.val < b.val; });
+    set<Number, function<bool(Number, Number)>> candidates(
+        {{0, 0}}, [](const Number& a, const Number& b) { return a.val < b.val; });
 
     vector<double> result;
-    while (size(result) < k) {
+    while (size(result) < k)
+    {
         auto next_smallest = cbegin(candidates);
         result.emplace_back(next_smallest->val);
 
@@ -38,7 +42,8 @@ vector<double> GenerateFirstKABSqrt2(int k) {
     return result;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[])
+{
     std::vector<std::string> args{argv + 1, argv + argc};
     std::vector<std::string> param_names{"k"};
     return GenericTestMain(args, "a_b_sqrt2.cc", "a_b_sqrt2.tsv",
